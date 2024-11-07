@@ -137,4 +137,26 @@ input[type="submit"] {
     background-color: #5954d6;
     transform: translateY(-2px);
 }
+  /* Stile per le immagini rotonde */
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .photo-container img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+        }
 
+.photo-container div {
+    text-align: center;
+}
+.photo-container p {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
