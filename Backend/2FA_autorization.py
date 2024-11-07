@@ -11,4 +11,6 @@ def verify_TOTP(totp):
     pyotp.verify(totp)
 
 #Totp via mail
+def sendemail(totp):
+    msg=totp
 
