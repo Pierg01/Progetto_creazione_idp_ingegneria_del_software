@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Registrazione</title>
@@ -9,17 +9,27 @@
 <h1>Registrati con noi</h1>
 <section class="form-section">
     <form action="/register" method="POST">
-        <label>
-            <input type="text" name="email" required />
-        </label>
-        <label>Nome:
+        <label>Username:
             <input type="text" name="username" required />
+        </label>
+        <br>
+        <label>
+            Email:
+            <input type="text" name="email" required />
         </label>
         <br>
         <label>Password:
             <input type="password" name="password" required />
         </label>
         <br>
+
+        <label>Conferma Password:
+            <input type="password" name="confirm_password" required />
+            </label>
+        <br>
+        <label>Data di nascita:
+            <input type="date" name="data_nascita" required />
+        </label>
     </form>
     <a href="da mettere in seguito per reindirizzamento oauth" class="button oauth-button">Registrati</a>
 </section>

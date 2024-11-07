@@ -160,3 +160,34 @@ input[type="submit"] {
     font-size: 1.2em;
     color: #333;
 }
+
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+    font-size: 1em;
+    color: #333;
+    background-color: #fff;
+}
+
+input[type="date"]:focus {
+    border-color: #6c63ff;
+    outline: none;
+}
+
+/* Style for the calendar dropdown */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #6c63ff;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: #5954d6;
+}
