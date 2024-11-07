@@ -1,7 +1,5 @@
-from re import search
 
 import pymongo
-import pprint
 
 
 
@@ -16,7 +14,6 @@ class Utente:
     def search(self,utente: dict):
         client = pymongo.MongoClient("mongodb+srv://pligorii1:<Mongodb01>@cluster0.rhvxckx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
         collection = client["Idp_user"]
-        print(client)
         if collection.find_one({"name":utente["name"]}) is None:
             return {"name": None, "password": None}
         else:
@@ -27,6 +24,3 @@ class Utente:
 
     def compare_password(self,password) -> bool:
         return  password == self.password
-
-
-if __name__ == "__main__":
