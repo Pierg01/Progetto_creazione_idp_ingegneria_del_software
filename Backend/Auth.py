@@ -2,6 +2,7 @@ import os.path
 
 from flask import Flask, render_template, request, redirect, url_for
 
+from Backend.Utente import Utente
 
 app = Flask(__name__, template_folder='../templates',static_folder='../static')
 
@@ -20,12 +21,25 @@ def mainpage():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if request.method == "GET":
+        return render_template('login.html')
+    elif request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        utente= Utente("","")
+        if utente.search({"username":username,"password":password}) is not None:
+            if utente.compare_password(password):
+                
+
+
+
+        
 
 
 @app.route('/registrazione')
 def registrazione():
-    return render_template('register.html')
+    if request.method == "GET":
+        return render_template('register.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
