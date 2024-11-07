@@ -25,5 +25,3 @@ class Utente:
     def compare_password(self,password) -> bool:
         return  password == self.password
 
-
-print("prova pull")
