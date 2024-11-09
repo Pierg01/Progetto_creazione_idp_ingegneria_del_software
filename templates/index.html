@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Iniziale</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/style.css') }}">
+</head>
+<body>
+<h1>IDP con Oauth e 2FA</h1>
+<h2>Scegli se accedere o registrarti</h2>
+<div class="button-container">
+    <a href="{{ url_for('registrazione') }}" class="button">Registrati</a>
+    <a href="{{ url_for('login') }}" class="button">Accedi</a>
+</div>
+<h1>Chi siamo</h1>
+<div class="photo-container">
+
+    <div>
+        <img src="{{ url_for('static', filename='Images/photo1.jpg') }}" alt="Foto 1">
+        <p>Rocco</p>
+    </div>
+    <div>
+        <img src="{{ url_for('static', filename='Images/photo2.jpg') }}" alt="Foto 2">
+        <p>Peppe</p>
+    </div>
+    <div>
+        <img src="{{ url_for('static', filename='Images/photo3.jpg') }}" alt="Foto 3">
+        <p>Alessandro</p>
+    </div>
+    <div>
+        <img src="{{ url_for('static', filename='Images/photo4.jpg') }}" alt="Foto 4">
+        <p>Nicholas</p>
+    </div>
+</div>
+</body>
+</html>
