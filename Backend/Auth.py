@@ -1,7 +1,8 @@
-
-
+import requests
 import oauthlib.oauth2 as oauth2
 from flask import Flask, render_template, request, redirect, url_for
+from oauthlib.common import generate_client_id
+from oauthlib.oauth2 import BackendApplicationClient
 from oauthlib.openid.connect.core.tokens import JWTToken
 
 from Backend.Utente import Utente
@@ -25,7 +26,12 @@ def login():
         utente = Utente("","")
         utente.search({'username':username,'password':password})
         if utente.compare_password(password):
-            oauth2.OAuth2Token.get({'username':username,'password':password})
+            print(utente.compare_password(password))
+            token = JWTToken(request_validator=utente.compare_password(password))
+
+            token.create_token(utente,refresh_token=True)
+            return requests.get("",params={"token": token})
+    return redirect(url_for('login'))
 
 
 
