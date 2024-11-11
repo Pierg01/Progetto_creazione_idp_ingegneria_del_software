@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Token</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}" type="text/css" />
+</head>
+<body>
+{% block title %}
+<h1>
+    Questo è il seguente token:
+</h1>
+{% endblock %}
+<h2>
+    Non lo condividere con nessuno
+</h2>
+
+<p>
+    {{ strtoken }}
+</p>
+
+
+</body>
+</html>
