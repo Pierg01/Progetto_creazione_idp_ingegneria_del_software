@@ -1,5 +1,9 @@
+import requests
 from flask import Flask, render_template, request, redirect, url_for
 from jwt import PyJWT
+from pycparser.ply.yacc import token
+from urllib3.util import SSLContext
+
 import Utente
 import autorization
 
@@ -25,24 +29,56 @@ def login():
         print(utente)
 
         if Utente.compare_password(prova_utente["Password"], utente["Password"]):
-            jwtt = PyJWT()
-            token = jwtt.encode(payload={"Username": utente["Username"], "Password":utente["Password"]}, key="secret",algorithm='HS256')
-            return redirect(url_for("token_generator", strtoken=token))
+            jwt = PyJWT()
+            jwtt = jwt.encode(payload={"Username": utente["Username"], "Password": utente["Password"]}, key="secret",algorithm="HS256")
+            return render_template("token_generator.html",token=jwtt)
         else:
             print(False)
-            return redirect(url_for("login"))
+            return render_template("login")
 
 @app.route('/registrazione', methods=['GET', 'POST'])
+# registrazione utente
+# verificare che nome utente sia unico,
+# Verificare che la password sia abbastanza lunga e contenga determinati caratteri
+#
 def registrazione():
     if request.method == "GET":
         return render_template('register.html')
 
+    user = request.form['username']
+    password = request.form['password']
+    email = request.form['email']
 
-@app.route('/token', methods=['GET'])
-def token_generator():
-    token = request.args.get('strtoken')
-    if request.method == "GET":
-        return render_template('token_generator.html', strtoken=token)
+    chiave = autorization.generate_key()
+    if Utente.search_user(user )["Username"] is None:
+        utente = {
+            "Username": user,
+            "Password": password,
+            "Email": email,
+            "chiave segreta": chiave
+        }
+        Utente.insert_user(utente)
+
+
+@app.route('/otp_code',methods=['POST'])
+def otp_code():
+
+    utente = Utente.search_user(request.args.get('username'))
+    key = utente.get("chiave_segreta")
+    email = utente.get("email")
+    uri = autorization.generate_uri(key,utente.get("Username"),email)
+    if request.method=="POST":
+        metodo=request.form['2FA_chose']
+        if metodo=="TOTP":
+            codice=request.form['code']
+            if autorization.verify_totp(key,codice):
+                print(True)
+                return True
+            else:
+                return False
+        elif metodo=="EMAIL":
+            codice = request.form['code']
+            #continua con 2FA via email
 
 
 if __name__ == '__main__':
