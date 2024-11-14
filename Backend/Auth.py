@@ -22,17 +22,35 @@ def login():
     if request.method == "GET":
         return render_template('login.html')
     elif request.method == "POST":
+        print("RICHIESTA POST")
         username = request.form['username']
         password = request.form['password']
         utente = Utente.Utente("", "")
         utente.search({'username': username, 'password': password})
+        print("Ingresso if")
         if utente.compare_password(utente.password):
+            print("Sono entrato nella if")
             jwtt = PyJWT()
             token = jwtt.encode(payload={"Username": utente.Username, "Password": utente.password}, key="secret",
-                                algorithm='HS256')
-
+                               algorithm='HS256')
             return redirect(url_for("token_generator", strtoken=token))
-        return redirect(url_for('login'))
+        return render_template('login.html')
+
+@app.route('/token_generator', methods=['GET', 'POST'])
+def otp_code():
+    if request.method=="POST":
+        metodo=request.form['2FA_chose']
+        if metodo=="TOTP":
+            codice=request.form['code']
+            if autorization.totp_generatore.verify_totp(codice):
+                return True
+            else:
+                return False
+        elif metodo=="EMAIL":
+            codice = request.form['code']
+            #continua con 2FA via email
+
+
 
 @app.route('/registrazione', methods=['GET', 'POST'])
 def registrazione():
@@ -45,7 +63,6 @@ def token_generator():
     token = request.args.get('strtoken')
     if request.method == "GET":
         return render_template('token_generator.html', strtoken=token)
-
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
