@@ -1,29 +1,19 @@
 import pymongo
 
 
-class Utente:
-
-    def __init__(self,username: str,password: str):
-        self.Username=username
-        self.password=password
-
-
-    def search(self,utente: dict) -> dict:
-        client = pymongo.MongoClient("/mongodb+srv://pligorii1:<Mongodb01>@cluster0.rhvxckx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-        collection = client["Idp_user"]
-
-        if collection.Utenti.find({"Username":utente["username"]}) is None:
-            return {"Username": None, "password": None}
-        else:
-            users = collection.Utenti.find({"Username": utente["username"]})
-            for user in users:
-                self.Username=user["Username"]
-                self.password=user["password"]
-
-    def compare_password(self,password) -> bool:
-        return  password == self.password
+def search_user(utente: dict) -> dict:
+    dbs = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = dbs.get_database("Idp_User")
+    collection = db.get_collection("Idp_User")
+    users=collection.find_one().get("Utenti")
+    if users:
+        for user in users:
+            if user.get("Username")==utente.get("Username"):
+                return user
+    return {"Username":None,"Password":None}
 
 
 
 
-
+def compare_password(password1, password2) -> bool:
+    return password1 == password2

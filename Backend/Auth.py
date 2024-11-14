@@ -1,10 +1,5 @@
-import requests
-import oauthlib.oauth2 as oauth2
 from flask import Flask, render_template, request, redirect, url_for
 from jwt import PyJWT
-from oauthlib.common import generate_client_id
-from oauthlib.oauth2 import BackendApplicationClient
-import jwt
 import Utente
 import autorization
 
@@ -22,17 +17,20 @@ def login():
     if request.method == "GET":
         return render_template('login.html')
     elif request.method == "POST":
+        print("Richiesta post")
         username = request.form['username']
         password = request.form['password']
-        utente = Utente.Utente("", "")
-        utente.search({'username': username, 'password': password})
-        if utente.compare_password(utente.password):
-            jwtt = PyJWT()
-            token = jwtt.encode(payload={"Username": utente.Username, "Password": utente.password}, key="secret",
-                                algorithm='HS256')
+        prova_utente={"Username": username, "Password": password}
+        utente = Utente.search_user(prova_utente)
+        print(utente)
 
+        if Utente.compare_password(prova_utente["Password"], utente["Password"]):
+            jwtt = PyJWT()
+            token = jwtt.encode(payload={"Username": utente["Username"], "Password":utente["Password"]}, key="secret",algorithm='HS256')
             return redirect(url_for("token_generator", strtoken=token))
-        return redirect(url_for('login'))
+        else:
+            print(False)
+            return redirect(url_for("login"))
 
 @app.route('/registrazione', methods=['GET', 'POST'])
 def registrazione():
