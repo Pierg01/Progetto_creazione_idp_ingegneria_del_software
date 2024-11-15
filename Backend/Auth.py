@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from jwt import PyJWT
 from pycparser.ply.yacc import token
 from urllib3.util import SSLContext
+import json
 
 import Utente
 import autorization
@@ -25,16 +26,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
         prova_utente={"Username": username, "Password": password}
-        utente = Utente.search_user(prova_utente)
+        utente = Utente.search_user(prova_utente["Username"])
         print(utente)
 
         if Utente.compare_password(prova_utente["Password"], utente["Password"]):
             jwt = PyJWT()
             jwtt = jwt.encode(payload={"Username": utente["Username"], "Password": utente["Password"]}, key="secret",algorithm="HS256")
-            return render_template("token_generator.html",token=jwtt)
+            return redirect(url_for('otp_code',token=jwtt))
         else:
             print(False)
-            return render_template("login")
+            return redirect(url_for('login'))
 
 @app.route('/registrazione', methods=['GET', 'POST'])
 # registrazione utente
@@ -48,9 +49,8 @@ def registrazione():
     user = request.form['username']
     password = request.form['password']
     email = request.form['email']
-
-    chiave = autorization.generate_key()
-    if Utente.search_user(user )["Username"] is None:
+    chiave = autorization.generate_uri(autorization.generate_key(),user,email)
+    if Utente.search_user(user)["Username"] is None:
         utente = {
             "Username": user,
             "Password": password,
@@ -58,12 +58,15 @@ def registrazione():
             "chiave segreta": chiave
         }
         Utente.insert_user(utente)
-
+        return redirect(url_for('login'))
 
 @app.route('/otp_code',methods=['POST'])
-def otp_code():
+def otp_code(token: str):
+    jwt = PyJWT()
+    utente = PyJWT.decode(jwt,token,key="secret",algorithm="HS256")
+    username = utente["Username"]
 
-    utente = Utente.search_user(request.args.get('username'))
+    utente = Utente.search_user(username)
     key = utente.get("chiave_segreta")
     email = utente.get("email")
     uri = autorization.generate_uri(key,utente.get("Username"),email)

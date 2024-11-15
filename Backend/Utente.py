@@ -1,4 +1,5 @@
 import pymongo
+import json
 
 
 def search_user(utente: str) -> dict:
@@ -21,10 +22,11 @@ def get_key(utente: str) -> str:
 def insert_user(user):
     dbs = pymongo.MongoClient("mongodb://localhost:27017/")
     db = dbs.get_database("Idp_User")
-    collection = db.get_collection("Idp_User")
-    collection.get("Utenti")
-    collection.
-
+    collection = db["Idp_User"]
+    collection.update_one(
+        {"Utenti": {"$exists": True}},
+        {"$push": {"Utenti": user}}
+    )
 
 
 def compare_password(password1, password2) -> bool:
