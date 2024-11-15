@@ -1,10 +1,9 @@
 import requests
-import oauthlib.oauth2 as oauth2
 from flask import Flask, render_template, request, redirect, url_for
 from jwt import PyJWT
-from oauthlib.common import generate_client_id
-from oauthlib.oauth2 import BackendApplicationClient
-import jwt
+from pycparser.ply.yacc import token
+from urllib3.util import SSLContext
+
 import Utente
 import autorization
 
@@ -22,47 +21,65 @@ def login():
     if request.method == "GET":
         return render_template('login.html')
     elif request.method == "POST":
-        print("RICHIESTA POST")
+        print("Richiesta post")
         username = request.form['username']
         password = request.form['password']
-        utente = Utente.Utente("", "")
-        utente.search({'username': username, 'password': password})
-        print("Ingresso if")
-        if utente.compare_password(utente.password):
-            print("Sono entrato nella if")
-            jwtt = PyJWT()
-            token = jwtt.encode(payload={"Username": utente.Username, "Password": utente.password}, key="secret",
-                               algorithm='HS256')
-            return redirect(url_for("token_generator", strtoken=token))
-        return render_template('login.html')
+        prova_utente={"Username": username, "Password": password}
+        utente = Utente.search_user(prova_utente)
+        print(utente)
 
-@app.route('/token_generator', methods=['GET', 'POST'])
+        if Utente.compare_password(prova_utente["Password"], utente["Password"]):
+            jwt = PyJWT()
+            jwtt = jwt.encode(payload={"Username": utente["Username"], "Password": utente["Password"]}, key="secret",algorithm="HS256")
+            return render_template("token_generator.html",token=jwtt)
+        else:
+            print(False)
+            return render_template("login")
+
+@app.route('/registrazione', methods=['GET', 'POST'])
+# registrazione utente
+# verificare che nome utente sia unico,
+# Verificare che la password sia abbastanza lunga e contenga determinati caratteri
+#
+def registrazione():
+    if request.method == "GET":
+        return render_template('register.html')
+
+    user = request.form['username']
+    password = request.form['password']
+    email = request.form['email']
+
+    chiave = autorization.generate_key()
+    if Utente.search_user(user )["Username"] is None:
+        utente = {
+            "Username": user,
+            "Password": password,
+            "Email": email,
+            "chiave segreta": chiave
+        }
+        Utente.insert_user(utente)
+
+
+@app.route('/otp_code',methods=['POST'])
 def otp_code():
+
+    utente = Utente.search_user(request.args.get('username'))
+    key = utente.get("chiave_segreta")
+    email = utente.get("email")
+    uri = autorization.generate_uri(key,utente.get("Username"),email)
     if request.method=="POST":
         metodo=request.form['2FA_chose']
         if metodo=="TOTP":
             codice=request.form['code']
-            if autorization.totp_generatore.verify_totp(codice):
+            if autorization.verify_totp(key,codice):
+                print(True)
                 return True
             else:
                 return False
         elif metodo=="EMAIL":
             codice = request.form['code']
-            #continua con 2FA via email
+            #continua con 2FA via email
 
-
-
-@app.route('/registrazione', methods=['GET', 'POST'])
-def registrazione():
-    if request.method == "GET":
-        return render_template('register.html')
-
-
-@app.route('/token', methods=['GET'])
-def token_generator():
-    token = request.args.get('strtoken')
-    if request.method == "GET":
-        return render_template('token_generator.html', strtoken=token)
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
