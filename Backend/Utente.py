@@ -1,6 +1,4 @@
 import pymongo
-import json
-
 
 def search_user(utente: str) -> dict:
     dbs = pymongo.MongoClient("mongodb://localhost:27017/")

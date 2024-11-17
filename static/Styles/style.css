@@ -1,0 +1,194 @@
+/* Stile Generale */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #1B262C; /* Charcoal Blue */
+    color: #BBE1FA; /* Ivory White */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+/* Titolo */
+h1 {
+    font-size: 2.5em;
+    margin-top: 0;
+    text-align: center;
+    color: #3282B8; /* Aqua Blue */
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Sezione del form */
+.form-section {
+    background: #3A506B; /* Slate Gray */
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 400px;
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.form-section:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Etichette */
+label {
+    display: block;
+    font-size: 1.1em;
+    color: #BBE1FA; /* Ivory White */
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Campi di input */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 20px;
+    border: 2px solid #3282B8; /* Aqua Blue */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+    background: #1B262C; /* Charcoal Blue */
+    color: #BBE1FA; /* Ivory White */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #0F4C75; /* Deep Cyan */
+    box-shadow: 0px 0px 8px rgba(15, 76, 117, 0.6);
+    outline: none;
+}
+
+/* Pulsante di submit */
+input[type="submit"] {
+    width: 100%;
+    background: #0F4C75; /* Deep Cyan */
+    color: #BBE1FA; /* Ivory White */
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+input[type="submit"]:hover {
+    background: #3282B8; /* Aqua Blue */
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Pulsanti generali */
+.button-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button {
+    text-decoration: none;
+    color: #BBE1FA; /* Ivory White */
+    background: #0F4C75; /* Deep Cyan */
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+}
+
+.button:hover {
+    background: #3282B8; /* Aqua Blue */
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Animazione di transizione */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stile per inserimento OTP */
+.otp-input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid #3282B8; /* Aqua Blue */
+    border-radius: 8px;
+    background: #1B262C; /* Charcoal Blue */
+    color: #BBE1FA; /* Ivory White */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.otp-input:focus {
+    border-color: #0F4C75; /* Deep Cyan */
+    box-shadow: 0px 0px 10px rgba(15, 76, 117, 0.6);
+    outline: none;
+}
+/* Contenitore per le immagini */
+.photo-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Stile delle immagini */
+.photo-container img {
+    width: 150px; /* Dimensione più compatta */
+    height: 150px;
+    border-radius: 12px; /* Angoli arrotondati moderni */
+    object-fit: cover; /* Mantieni proporzioni corrette */
+    border: 2px solid #3282B8; /* Colore Aqua Blue per il bordo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Effetto ombra leggera */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover interattivo */
+.photo-container img:hover {
+    transform: scale(1.1); /* Zoom leggero */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Ombra più intensa */
+}
+
+/* Testo descrittivo delle immagini */
+.photo-container div {
+    text-align: center;
+    color: #BBE1FA; /* Ivory White */
+    font-size: 0.9em; /* Testo compatto */
+    margin-top: 8px;
+}
+
+.photo-container p {
+    margin: 0;
+    font-weight: bold;
+    color: #BBE1FA; /* Colore abbinato */
+    font-size: 1em;
+}
+
+/* Responsività per dispositivi piccoli */
+@media (max-width: 600px) {
+    .photo-container img {
+        width: 120px; /* Immagini più piccole su schermi stretti */
+        height: 120px;
+    }
+}
