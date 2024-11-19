@@ -1,9 +1,8 @@
+import requests
 from flask import Flask, render_template, request, redirect, url_for
-from jwt import PyJWT
-
+import jwt
 import Utente
 import autorization
-
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
 
@@ -12,54 +11,70 @@ def mainpage():
     if request.method == "GET":
         return render_template('index.html')
 
+@app.route('/success')
+def success():
+    if request.method == "GET":
+        return render_template('success.html')
 
+@app.route('/insuccess')
+def insuccess():
+    if request.method == "GET":
+        return render_template('insuccess.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "GET":
         return render_template('login.html')
     elif request.method == "POST":
-        print("Richiesta post")
-        # Acquisisco i dati dal form
         username = request.form['username']
         password = request.form['password']
         prova_utente = {"Username": username, "Password": password}
-
-        # Cerco l'utente nel database
         utente = Utente.search_user(prova_utente["Username"])
-        # Se l'utente non esiste, ritorno alla pagina di login
-        if utente is None:
-            print("Utente non trovato")
+        if not utente:
+            print("Utente inesistente")
             return redirect(url_for('login'))
 
-        print("Utente trovato:", utente)
-
-        # Verifico la correttezza della password
         if Utente.compare_password(prova_utente["Password"], utente["Password"]):
-            jwt = PyJWT()
-            jwtt = jwt.encode(payload={"Username": utente["Username"], "Password": utente["Password"]}, key="secret",
-                              algorithm="HS256")
-            print("JWT generato:", jwtt)
-            return redirect(url_for('token_generator', strtoken=jwtt))
+            jwtt = jwt.encode(
+                {"Username": utente["Username"], "Password": utente["Password"]},
+                "secret",
+                algorithm="HS256"
+            )
+            return redirect(url_for('otp_code', token=jwtt))
         else:
             print("Password errata")
             return redirect(url_for('login'))
 
+@app.route('/otp_code/<token>', methods=['POST', 'GET'])
+def otp_code(token: str):
+    if request.method == "GET":
+        return render_template('token_generator.html', token=token)
+    elif request.method == "POST":
+        try:
+            utente = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.DecodeError:
+            print("Invalid token")
+            return "Invalid token", 400
 
-@app.route('/token_generator')
-def token_generator():
-    strtoken = request.args.get('strtoken')
-    return render_template('token_generator.html', strtoken=strtoken)
-
+        username = utente["Username"]
+        utente = Utente.search_user(username)
+        key = utente.get("chiave segreta")
+        metodo = request.form['2FA_chose']
+        if metodo == "TOTP":
+            codice = request.form['code']
+            if autorization.verify_totp(key, codice):
+                return "Codice valido", 200
+            else:
+                return "Codice non valido", 400
+        elif metodo == "EMAIL":
+            #codice per inviare la mail
+            codice = request.form['code']
+            # codice per verificare se il codice inserito è corretto
 
 @app.route('/registrazione', methods=['GET', 'POST'])
-# registrazione utente
-
-# Verificare che la password sia abbastanza lunga e contenga determinati caratteri
-#
 def registrazione():
     if request.method == "GET":
         return render_template('register.html')
-#Acquisisco i dati del nuovo utente dal form
+    # Acquisisco i dati del nuovo utente dal form
     user = request.form['username']
     password = request.form['password']
     email = request.form['email']
@@ -74,54 +89,29 @@ def registrazione():
             "Email": email,
             "chiave segreta": chiave
         }
+        #verifica dell'esistenza della email
         # Inserisco l'utente nel database e genero il QR code per il TOTP
         Utente.insert_user(utente)
         return render_template('show_qrcode.html', qr_code_img=qr_code_img, username=user)
 
-#Verifica del codice TOTP
+
+# Verifica del codice TOTP
 @app.route('/verify_totp', methods=['POST'])
 def verify_totp():
     username = request.form['username']
     code = request.form['code']
     utente = Utente.search_user(username)
     key = utente["chiave segreta"]
-
+    print(key)
+    print(code)
+    print(autorization.verify_totp(key, code))
     if autorization.verify_totp(key, code):
-        return redirect(url_for('login'))
+        return render_template('success.html')
     else:
-        return "Codice TOTP non valido. Riprova.", 400
-
-@app.route('/acquisisci_metodo/<token>', methods=['POST'])
-def acquisisci_metodo():
-    jwt = PyJWT()
-    utente = jwt.decode(token, key="secret", algorithms=["HS256"])
-    username = utente["Username"]
-
-    utente = Utente.search_user(username)
-    key = utente.get("chiave_segreta")
-    email = utente.get("email")
-    uri = autorization.generate_uri(key, utente.get("Username"), email)
-
-    metodo = request.form["2FA_chose"]
-    return metodo
-@app.route('/otp_code/<token>', methods=['POST'])
-def otp_code(token: str):
-    metodo=acquisisci_metodo()
-    if metodo == "TOTP":
-        codice = request.form.get('codeInput')
-        if autorization.verify_totp(key, codice):
-            return "TOTP verification successful", 200
-        else:
-            return "TOTP verification failed", 400
-    elif metodo == "EMAIL":
-        codice = request.form.get('codeInput')
-        # continua con 2FA via email
-        return "Email verification not implemented", 501
-    else:
-        return "Invalid 2FA method", 400
+        token = request.form['token']  # Ensure token is retrieved from the form
+        return render_template('insuccess.html', token=token)
 
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
-
     app.run(port=3000, debug=True)

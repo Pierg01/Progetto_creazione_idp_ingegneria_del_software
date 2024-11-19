@@ -14,7 +14,7 @@ def search_user(utente: str) -> dict:
 
 def get_key(utente: str) -> str:
     utente = search_user(utente)
-    return utente["chiave_segreta"]
+    return utente["chiave segreta"]
 
 
 def insert_user(user):

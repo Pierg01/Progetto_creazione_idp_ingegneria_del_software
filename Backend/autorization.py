@@ -17,5 +17,8 @@ def generate_qrcode(uri):
     return img_str
 
 def verify_totp(key, codice) -> bool:
-    print(f"Verifying TOTP code: {codice} with key: {key}")
     return pyotp.TOTP(key).verify(codice)
+
+#metodo di verifica del codice via mail
+
+#metodo di invio mail

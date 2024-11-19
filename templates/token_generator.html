@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}" type="text/css"/>
 </head>
 <body>
-{% block title %}
+<!--{% block title %}
 <h1>
     Questo è il seguente token:
 </h1>
@@ -16,16 +16,22 @@
 </h2>
 
 <p>
-    {{ strtoken }}
-</p>
+    {{ token }}
+</p>-->
+<h1> Seleziona il metodo di autenticazione</h1>
 <div>
-    <form id="2faForm" action="{{ url_for('Insert_code', token=strtoken) }}" method="POST">
-        <select name="2FA_chose" id="scelta" class="input-select">
-            <option value="TOTP">TOTP</option>
-            <option value="EMAIL">EMAIL</option>
-        </select>
-        <input type="submit" value="Scegli">
-    </form>
+    <form method="POST" action="/otp_code/{{ token }}">
+    <input type="hidden" name="token" value="{{ token }}">
+    <input type="hidden" name="token" value="{{ token }}">
+    <select name="2FA_chose">
+        <option value="TOTP">TOTP</option>
+        <option value="EMAIL">EMAIL</option>
+    </select>
+        <p>Inserire il codice di verifica</p>
+    <input type="text" name="code" maxlength="6">
+    <input type="submit" value="INVIA">
+</form>
 </div>
+
 </body>
 </html>
