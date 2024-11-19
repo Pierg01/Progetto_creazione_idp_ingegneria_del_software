@@ -11,15 +11,6 @@ def mainpage():
     if request.method == "GET":
         return render_template('index.html')
 
-@app.route('/success')
-def success():
-    if request.method == "GET":
-        return render_template('success.html')
-
-@app.route('/insuccess')
-def insuccess():
-    if request.method == "GET":
-        return render_template('insuccess.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "GET":
