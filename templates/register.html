@@ -16,22 +16,40 @@
                 toggleButton.textContent = "Mostra Password";
             }
         }
+
+        function validatePassword() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var errorMessage = document.getElementById("error-message");
+        var regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+        if (!regex.test(password)) {
+            errorMessage.textContent = "La password deve contenere almeno una lettera maiuscola, un numero e 8 caratteri minimo.";
+            return false;
+        }
+        errorMessage.textContent = "";
+        return true;
+    }
     </script>
 </head>
 <body>
 <h1>Registrati con noi</h1>
 <section class="form-section">
-    <form action="/registrazione" method="POST">
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form action="/registrazione" method="POST" onsubmit="return validatePassword()">
         <label>Email:
             <input type="email" name="email" required/>
         </label>
         <label>Username:
             <input type="text" name="username" required/>
         </label>
-             <label>Password:
+        <label>Password:
             <input type="password" id="password" name="password" required/>
             <input type="checkbox" id="togglePassword" onclick="togglePasswordVisibility()"> Mostra Password
         </label>
+        <p id="error-message" style="color: red;"></p>
         <input type="submit" value="Registrati"/>
     </form>
 </section>
