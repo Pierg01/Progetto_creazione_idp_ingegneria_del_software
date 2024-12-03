@@ -71,8 +71,23 @@ def registrazione():
     password = request.form['password']
     email = request.form['email']
 
+    #Verifico che il nome utente sia nei limiti di caratteri e senza spazi
+    if len(user) < 3 or len(user) > 25:
+        return render_template('register.html', error="Username deve contenere minimo 3 e al massimo 25 caratteri.")
+    if any(char in string.punctuation for char in user) or " " in user:
+        return render_template('register.html', error="Username non deve contenere caratteri speciali o spazi")
+
+    # verifico se utente inserisce una password corretta con almeno 8 caratteri, un numero e non caratteri speciali
     if user == password:
         return render_template('register.html', error="Username e password non possono coincidere.")
+    if len(password) < 8 or len (password) > 128:
+        return render_template('register.html', error=" password deve essere minimo 8 caratteri.")
+    if not any(char.isupper() for char in password) or  not any(char.isdigit() for char in password):
+        return render_template('register.html', error="La password deve contenere almeno un carattere maiuscolo e un numero")
+    if any(char in string.punctuation for char in password)  or " " in password:
+        return render_template('register.html', error="Password non deve contenere caratteri speciali o spazi")
+
+
 
     # Verifico se l'email è valida
     print(f"Verifying email: {email}")
@@ -85,6 +100,7 @@ def registrazione():
     chiave = autorization.generate_key()
     uri = autorization.generate_uri(chiave, user, email)
     qr_code_img = autorization.generate_qrcode(uri)
+
     # Verifico che l'utente non sia già registrato
     if not Utente.search_user(user):
         print("Ho verificato se l'utente esiste")
