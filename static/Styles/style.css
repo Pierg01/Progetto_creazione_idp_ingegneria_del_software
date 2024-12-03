@@ -1,8 +1,29 @@
-/* Stile Generale */
+/* Variabili per il tema */
+:root {
+    --background-color: #f1f5f9; /* Grigio chiaro e pulito */
+    --text-color: #333333; /* Testo scuro per un buon contrasto */
+    --primary-color: #6c5b7b; /* Viola/grigio polveroso, elegante */
+    --secondary-color: #f2a65d; /* Arancio chiaro, energico */
+    --accent-color: #65aEDD; /* Blu chiaro fresco */
+    --border-color: #d3d9e2; /* Bordo neutro e sobrio */
+    --box-shadow-color: rgba(0, 0, 0, 0.1); /* Ombra morbida e leggera */
+}
+
+body.dark {
+    --background-color: #2b2d42; /* Grigio scuro, più elegante per la modalità scura */
+    --text-color: #f1f5f9; /* Testo chiaro per contrasto */
+    --primary-color: #6b4f77; /* Viola scuro per la modalità scura */
+    --secondary-color: #f5a623; /* Arancio acceso */
+    --accent-color: #2a9d8f; /* Verde menta, fresco e moderno */
+    --border-color: #3e3e3e; /* Bordo scuro */
+    --box-shadow-color: rgba(0, 0, 0, 0.3); /* Ombra più profonda per la modalità scura */
+}
+
+/* Stili generali */
 body {
     font-family: 'Inter', sans-serif;
-    background: #1B262C; /* Charcoal Blue */
-    color: #BBE1FA; /* Ivory White */
+    background: var(--background-color);
+    color: var(--text-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,41 +31,42 @@ body {
     padding: 0;
     min-height: 100vh;
     justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Titolo */
 h1 {
-    font-size: 2.5em;
+    font-size: 2.8em;
     margin-top: 0;
     text-align: center;
-    color: #3282B8; /* Aqua Blue */
-    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    color: var(--primary-color);
+    text-shadow: 0 4px 8px var(--box-shadow-color);
 }
 
-/* Sezione del form */
+/* Sezione del modulo */
 .form-section {
-    background: #3A506B; /* Slate Gray */
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+    background: var(--primary-color);
+    border-radius: 16px;
+    padding: 35px;
+    box-shadow: 0 8px 20px var(--box-shadow-color);
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     transform: scale(1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .form-section:hover {
     transform: scale(1.05);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 12px 30px var(--box-shadow-color);
 }
 
 /* Etichette */
 label {
     display: block;
-    font-size: 1.1em;
-    color: #BBE1FA; /* Ivory White */
-    margin-bottom: 8px;
-    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    font-weight: 500;
 }
 
 /* Campi di input */
@@ -52,143 +74,197 @@ input[type="text"],
 input[type="password"],
 input[type="email"] {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin: 8px 0 20px;
-    border: 2px solid #3282B8; /* Aqua Blue */
-    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
     box-sizing: border-box;
-    font-size: 1em;
-    background: #1B262C; /* Charcoal Blue */
-    color: #BBE1FA; /* Ivory White */
+    font-size: 1.1em;
+    background: var(--background-color);
+    color: var(--text-color);
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus {
-    border-color: #0F4C75; /* Deep Cyan */
-    box-shadow: 0px 0px 8px rgba(15, 76, 117, 0.6);
+    border-color: var(--accent-color);
+    box-shadow: 0px 0px 10px var(--box-shadow-color);
     outline: none;
 }
 
-/* Pulsante di submit */
+/* Pulsante di invio */
 input[type="submit"] {
     width: 100%;
-    background: #0F4C75; /* Deep Cyan */
-    color: #BBE1FA; /* Ivory White */
-    padding: 12px;
+    background: var(--accent-color);
+    color: #ffffff;
+    padding: 14px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 1.2em;
-    font-weight: bold;
+    font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 6px 12px var(--box-shadow-color);
 }
 
 input[type="submit"]:hover {
-    background: #3282B8; /* Aqua Blue */
-    transform: translateY(-3px);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.6);
+    background: #ff9c5b; /* Arancio più chiaro */
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 15px var(--box-shadow-color);
 }
 
-/* Pulsanti generali */
+/* Contenitore dei pulsanti */
 .button-container {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .button {
     text-decoration: none;
-    color: #BBE1FA; /* Ivory White */
-    background: #0F4C75; /* Deep Cyan */
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1em;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    padding: 12px 26px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1em;
     transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 4px 8px var(--box-shadow-color);
 }
 
 .button:hover {
-    background: #3282B8; /* Aqua Blue */
-    transform: translateY(-3px);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.6);
+    background: var(--primary-color);
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 15px var(--box-shadow-color);
 }
 
-/* Animazione di transizione */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Stile per inserimento OTP */
-.otp-input {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    font-size: 1.5em;
-    text-align: center;
-    border: 2px solid #3282B8; /* Aqua Blue */
-    border-radius: 8px;
-    background: #1B262C; /* Charcoal Blue */
-    color: #BBE1FA; /* Ivory White */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.otp-input:focus {
-    border-color: #0F4C75; /* Deep Cyan */
-    box-shadow: 0px 0px 10px rgba(15, 76, 117, 0.6);
-    outline: none;
-}
-/* Contenitore per le immagini */
+/* Contenitore delle foto */
 .photo-container {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-/* Stile delle immagini */
 .photo-container img {
-    width: 150px; /* Dimensione più compatta */
-    height: 150px;
-    border-radius: 12px; /* Angoli arrotondati moderni */
-    object-fit: cover; /* Mantieni proporzioni corrette */
-    border: 2px solid #3282B8; /* Colore Aqua Blue per il bordo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Effetto ombra leggera */
+    width: 180px;
+    height: 180px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 10px var(--box-shadow-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover interattivo */
 .photo-container img:hover {
-    transform: scale(1.1); /* Zoom leggero */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Ombra più intensa */
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px var(--box-shadow-color);
 }
 
-/* Testo descrittivo delle immagini */
-.photo-container div {
-    text-align: center;
-    color: #BBE1FA; /* Ivory White */
-    font-size: 0.9em; /* Testo compatto */
-    margin-top: 8px;
-}
-
-.photo-container p {
-    margin: 0;
-    font-weight: bold;
-    color: #BBE1FA; /* Colore abbinato */
-    font-size: 1em;
-}
-
-/* Responsività per dispositivi piccoli */
+/* Responsività */
 @media (max-width: 600px) {
     .photo-container img {
-        width: 120px; /* Immagini più piccole su schermi stretti */
-        height: 120px;
+        width: 140px;
+        height: 140px;
     }
+}
+
+/* Interruttore del tema */
+.theme-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: inline-block;
+    width: 70px;
+    height: 38px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--primary-color);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 28px;
+    width: 28px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--secondary-color);
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(32px);
+}
+
+/* Campi di selezione */
+select {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0px 0px 10px var(--box-shadow-color);
+    outline: none;
+}
+/* Pulsante per cambiare tema */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--secondary-color);
+    padding: 12px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 6px 10px var(--box-shadow-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Hover con effetto brillante */
+.theme-toggle:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0px 8px 15px var(--box-shadow-color);
+}
+
+/* Effetto clic */
+.theme-toggle:active {
+    transform: translateY(1px) scale(0.95);
+    box-shadow: 0px 4px 8px var(--box-shadow-color);
 }

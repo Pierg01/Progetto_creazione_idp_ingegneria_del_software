@@ -6,6 +6,19 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}" type="text/css"/>
 </head>
 <body>
+<button class="theme-toggle" id="theme-toggle">S</button>
+    <script>
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Cambia tema al clic del pulsante
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            themeToggle.textContent = body.classList.contains('dark')
+                ? 'Switch to Light Theme'
+                : 'Switch to Dark Theme';
+        });
+    </script>
 <h1> Seleziona il metodo di autenticazione</h1>
 <div>
     <form method="POST" action="/otp_code/{{ iid }}" id = "form_2fa">
@@ -35,10 +48,22 @@
         }
         else{
             form.action=email
-            fetch(form.action).then((r) => {console.log(r)})
+            fetch(form.action,{
+                method: 'POST'
+            }).then((r) => {console.log(r)})
 
         }
         console.log(form.action)
+    })
+
+    let code = document.body.querySelector('input[name="code"]').value
+    let submit = document.body.querySelector('input[type="submit"]')
+    submit.addEventListener('click',(e)=>{
+        e.preventDefault()
+
+        fetch(`/step_finale_email/{{ cod_gen }}/${code}`,{
+        method: 'POST'
+    }).then((r) => {console.log(r)})
     })
 
 

@@ -52,13 +52,7 @@ def otp_code(iid):
                 return open(Token.send_request_token(utente).json()[0])
             else:
                 return "Codice non valido", 400
-        elif metodo == "EMAIL":
-            cod_gen=autorization.generate_code(key)
-            email = utente["Email"]
-            verifica_email.invia_mex(email, cod_gen)
-            codice = request.form['code']
-            if cod_gen == codice:
-                return open(Token.send_request_token(utente).json()[0])
+
 
 
 @app.route('/registrazione', methods=['GET', 'POST'])
@@ -140,6 +134,7 @@ def inserimento(iid):
         verifica_email.invia_mex(email, cod_gen)
         return render_template('inserimento_codice.html', iid=iid, cod_gen=cod_gen)
 
+
 @app.route('/verifica_codice/<iid>/<cod_gen>', methods=['POST'])
 def verifica_codice(iid, cod_gen):
     if request.method == 'POST':
@@ -156,6 +151,7 @@ def verifica_codice(iid, cod_gen):
             return "Codice errato", 400
     return "Invalid request method", 405
 
+
 @app.route('/verify_totp_recuperato', methods=['POST'])
 def verify_totp_recuperato():
     username = request.form['username']
@@ -168,11 +164,21 @@ def verify_totp_recuperato():
         return "Codice non valido", 400
 
 
-@app.route('/send_email/<iid>',methods=['POST'])
-def manda_email(iid):
-    utente=Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
-    verifica_email.invia_mex(utente["Email"], autorization.generate_code(utente["chiave segreta"]))
+@app.route('/send_email/<iid>', methods=['POST'])
+def send_email(iid):
+    if request.method == 'POST':
+        utente = Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
+        cod_gen=autorization.generate_code(utente["chiave segreta"])
+        verifica_email.invia_mex(utente["Email"], cod_gen)
+        return redirect(url_for('step_finale_email', cod_gen=cod_gen))
 
+@app.route('/step_finale_email/<cod_gen>/<code>', methods=['POST'])
+def step_finale_email(cod_gen,code):
+    if request.method=='POST':
+        if cod_gen==code:
+            return 'codice corretto',200
+        else:
+            return 'codice errato',400
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"

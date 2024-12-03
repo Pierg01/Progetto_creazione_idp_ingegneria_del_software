@@ -17,6 +17,21 @@
     </script>
 </head>
 <body>
+<button class="theme-toggle" id="theme-toggle">Switch Theme</button>
+    <h1>Theme Switcher</h1>
+
+    <script>
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Cambia tema al clic del pulsante
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            themeToggle.textContent = body.classList.contains('dark')
+                ? 'Switch to Light Theme'
+                : 'Switch to Dark Theme';
+        });
+    </script>
 {% block title %}
 <h1>Accedi</h1>
 {% endblock %}
