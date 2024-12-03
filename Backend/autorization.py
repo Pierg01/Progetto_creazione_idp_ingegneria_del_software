@@ -16,9 +16,8 @@ def generate_qrcode(uri):
     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
     return img_str
 
-def verify_totp(key, codice) -> bool:
+def verify_totp(key,codice) -> bool:
     return pyotp.TOTP(key).verify(codice)
 
-#metodo di verifica del codice via mail
-
-#metodo di invio mail
+def generate_code(key):
+    return pyotp.TOTP(key).now()
