@@ -8,12 +8,13 @@
 <body>
 <h1> Seleziona il metodo di autenticazione</h1>
 <div>
-    <form method="POST" action="/otp_code/{{ iid }}">
+    <form method="POST" action="/otp_code/{{ iid }}" id = "form_2fa">
         <input type="hidden" name="iid" value="{{ iid }}">
-        <select name="2FA_chose">
+        <select name="2FA_chose" id="select_method">
             <option value="TOTP">TOTP</option>
             <option value="EMAIL">EMAIL</option>
         </select>
+        <input type="button" name="change_route" id="change_route" placeholder="cambia metodo"/>
         <p>Inserire il codice di verifica</p>
         <input type="text" name="code" maxlength="6">
         <input type="submit" value="INVIA">
@@ -22,5 +23,25 @@
 <div>
     <a href="{{ url_for('inserimento', iid = iid) }}">Recupera qui la tua chiave TOTP</a>
 </div>
+<script>
+    let totp = "/otp_code/{{ iid }}"
+    let email= "/send_email/{{ iid }}"
+    let form= document.getElementById('form_2fa')
+    let button=document.getElementById('change_route')
+    button.addEventListener('click',()=>{
+        let select = document.getElementById('select_method')
+        if (select.value === 'TOTP'){
+            form.action=totp
+        }
+        else{
+            form.action=email
+            fetch(form.action).then((r) => {console.log(r)})
+
+        }
+        console.log(form.action)
+    })
+
+
+</script>
 </body>
 </html>

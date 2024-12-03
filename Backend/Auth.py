@@ -127,7 +127,6 @@ def inserimento(iid):
 @app.route('/verifica_codice/<iid>/<cod_gen>', methods=['POST'])
 def verifica_codice(iid, cod_gen):
     if request.method == 'POST':
-        print("SONO QUI")
         codice = request.form['codice']
         if cod_gen == codice:
             utente = Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
@@ -151,6 +150,13 @@ def verify_totp_recuperato():
         return render_template('recuperato_success.html')
     else:
         return "Codice non valido", 400
+
+
+@app.route('/send_email/<iid>',methods=['POST'])
+def manda_email(iid):
+    utente=Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
+    verifica_email.invia_mex(utente["Email"], autorization.generate_code(utente["chiave segreta"]))
+
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
