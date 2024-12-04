@@ -1,7 +1,12 @@
 import base64
+import json
 import random
 import string
+
+import requests
 from flask import Flask, render_template, request, redirect, url_for
+from pymongo.response import Response
+
 import Utente
 import autorization
 import verifica_email
@@ -170,11 +175,15 @@ def send_email(iid):
         utente = Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
         cod_gen=autorization.generate_code(utente["chiave segreta"])
         verifica_email.invia_mex(utente["Email"], cod_gen)
-        return redirect(url_for('step_finale_email', cod_gen=cod_gen))
+        cod_gen= base64.b64encode(cod_gen.encode('utf-8')).decode('utf-8')
+        return redirect(url_for('step_finale_email',iid=iid,cod_gen=cod_gen))
 
-@app.route('/step_finale_email/<cod_gen>/<code>', methods=['POST'])
-def step_finale_email(cod_gen,code):
+@app.route('/step_finale_email/<iid>/<cod_gen>', methods=['GET','POST'])
+def step_finale_email(iid,cod_gen):
+    if request.method == 'GET':
+        return render_template('Verifica_codice_email.html')
     if request.method=='POST':
+        code= request.form['code']
         if cod_gen==code:
             return 'codice corretto',200
         else:

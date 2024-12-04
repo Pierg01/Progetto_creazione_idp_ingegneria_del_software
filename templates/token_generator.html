@@ -15,8 +15,8 @@
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('dark');
             themeToggle.textContent = body.classList.contains('dark')
-                ? 'Switch to Light Theme'
-                : 'Switch to Dark Theme';
+                ? 'Tema chiaro'
+                : 'Tema scuro';
         });
     </script>
 <h1> Seleziona il metodo di autenticazione</h1>
@@ -27,10 +27,7 @@
             <option value="TOTP">TOTP</option>
             <option value="EMAIL">EMAIL</option>
         </select>
-        <input type="button" name="change_route" id="change_route" placeholder="cambia metodo"/>
-        <p>Inserire il codice di verifica</p>
-        <input type="text" name="code" maxlength="6">
-        <input type="submit" value="INVIA">
+        <input type="submit" name="change_route" id="change_route" placeholder="cambia metodo"/>
     </form>
 </div>
 <div>
@@ -54,16 +51,6 @@
 
         }
         console.log(form.action)
-    })
-
-    let code = document.body.querySelector('input[name="code"]').value
-    let submit = document.body.querySelector('input[type="submit"]')
-    submit.addEventListener('click',(e)=>{
-        e.preventDefault()
-
-        fetch(`/step_finale_email/{{ cod_gen }}/${code}`,{
-        method: 'POST'
-    }).then((r) => {console.log(r)})
     })
 
 
