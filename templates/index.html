@@ -2,52 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagina Iniziale</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Styles/style.css') }}">
+     <style>
+        /* Stile di base per i temi */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Pulsante tema */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: inherit;
+        }
+
+        .theme-toggle:focus {
+            outline: none;
+        }
+    </style>
 </head>
-<body>
-<button class="theme-toggle" id="theme-toggle">Cambia te</button>
+<body class="light">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+        🌙
+    </button>
     <script>
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
 
+        // Salva il tema preferito in localStorage
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            body.className = currentTheme;
+            themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        }
+
         // Cambia tema al clic del pulsante
         themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark');
-            themeToggle.textContent = body.classList.contains('dark')
-                ? 'Switch to Light Theme'
-                : 'Switch to Dark Theme';
+            const isDarkMode = body.classList.toggle('dark');
+            body.classList.toggle('light', !isDarkMode);
+            themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+
+            // Salva il tema attuale in localStorage
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         });
     </script>
-<h1>IDP con Oauth e 2FA</h1>
-<h2>Scegli se accedere o registrarti</h2>
-<div class="button-container">
-    <a href="{{ url_for('registrazione') }}" class="button">Registrati</a>
-    <a href="{{ url_for('login') }}" class="button">Accedi</a>
-</div>
-<br>
-<div>
-    <h1>Chi siamo</h1>
-</div>
 
-<div class="photo-container">
-
-    <div>
-        <img src="{{ url_for('static', filename='Images/photo1.jpg') }}" alt="Foto 1">
-        <p>Rocco</p>
+    <h1>IDP con Oauth e 2FA</h1>
+    <h2>Selezioni una delle seguenti opzioni:</h2>
+    <div class="button-container">
+        <a href="{{ url_for('registrazione') }}" class="button">Registrati</a>
+        <a href="{{ url_for('login') }}" class="button">Accedi</a>
     </div>
+    <br>
     <div>
-        <img src="{{ url_for('static', filename='Images/photo2.jpg') }}" alt="Foto 2">
-        <p>Peppe</p>
+        <h1>Chi siamo</h1>
     </div>
-    <div>
-        <img src="{{ url_for('static', filename='Images/photo3.jpg') }}" alt="Foto 3">
-        <p>Alessandro</p>
+    <div class="photo-container">
+        <div>
+            <img src="{{ url_for('static', filename='Images/photo1.jpg') }}" alt="Foto 1">
+            <p>Rocco</p>
+        </div>
+        <div>
+            <img src="{{ url_for('static', filename='Images/photo2.jpg') }}" alt="Foto 2">
+            <p>Peppe</p>
+        </div>
+        <div>
+            <img src="{{ url_for('static', filename='Images/photo3.jpg') }}" alt="Foto 3">
+            <p>Alessandro</p>
+        </div>
+        <div>
+            <img src="{{ url_for('static', filename='Images/photo4.jpg') }}" alt="Foto 4">
+            <p>Nicholas</p>
+        </div>
     </div>
-    <div>
-        <img src="{{ url_for('static', filename='Images/photo4.jpg') }}" alt="Foto 4">
-        <p>Nicholas</p>
-    </div>
-</div>
 </body>
 </html>
