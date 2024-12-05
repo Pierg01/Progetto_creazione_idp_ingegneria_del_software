@@ -1,7 +1,12 @@
+import base64
+import hashlib
+import hmac
+import struct
+from io import BytesIO
+
 import pyotp
 import qrcode
-import base64
-from io import BytesIO
+
 
 def generate_key():
     return pyotp.random_base32()
@@ -21,3 +26,11 @@ def verify_totp(key,codice) -> bool:
 
 def generate_code(key):
     return pyotp.TOTP(key).now()
+
+def generate_hotp(secret, counter):
+    key = base64.b32decode(secret, True)
+    msg = struct.pack(">Q", counter)
+    hmac_hash = hmac.new(key, msg, hashlib.sha1).digest()
+    o = hmac_hash[19] & 15
+    hotp = (struct.unpack(">I", hmac_hash[o:o+4])[0] & 0x7fffffff) % 1000000
+    return '{:06d}'.format(hotp)

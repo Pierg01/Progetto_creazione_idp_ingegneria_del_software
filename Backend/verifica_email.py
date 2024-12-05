@@ -42,4 +42,3 @@ def invia_mex(to, codice):
         connection.sendmail(from_addr=my_email,
                             to_addrs=to,
                             msg="Subject:Codice di verifica\n\nInserire questo codice per effettuare la verifica: " + codice)
-

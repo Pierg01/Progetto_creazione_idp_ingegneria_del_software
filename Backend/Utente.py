@@ -28,8 +28,6 @@ def get_key_email(email: str) -> str:
     print("SONO NEL METODO PER AVERE LA CHIAVE DALLA EMAIL")
     return utente["chiave segreta"]
 
-
-
 def insert_user(user):
     dbs = pymongo.MongoClient("mongodb://localhost:27017/")
     db = dbs.get_database("Idp_User")

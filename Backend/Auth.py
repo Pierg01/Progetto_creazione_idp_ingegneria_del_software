@@ -2,6 +2,7 @@ import base64
 import json
 import random
 import string
+import time
 
 import requests
 from flask import Flask, render_template, request, redirect, url_for
@@ -173,21 +174,25 @@ def verify_totp_recuperato():
 def send_email(iid):
     if request.method == 'POST':
         utente = Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
-        cod_gen=autorization.generate_code(utente["chiave segreta"])
+        counter = int(time.time() // 30)  # Example counter based on time
+        cod_gen = autorization.generate_hotp(utente["chiave segreta"], counter)
         verifica_email.invia_mex(utente["Email"], cod_gen)
-        cod_gen= base64.b64encode(cod_gen.encode('utf-8')).decode('utf-8')
-        return redirect(url_for('step_finale_email',iid=iid,cod_gen=cod_gen))
+        return redirect(url_for('step_finale_email', iid=iid))
 
-@app.route('/step_finale_email/<iid>/<cod_gen>', methods=['GET','POST'])
-def step_finale_email(iid,cod_gen):
+@app.route('/step_finale_email/<iid>', methods=['GET', 'POST'])
+def step_finale_email(iid):
     if request.method == 'GET':
-        return render_template('Verifica_codice_email.html')
-    if request.method=='POST':
-        code= request.form['code']
-        if cod_gen==code:
-            return 'codice corretto',200
+        return render_template('Verifica_codice_email.html', iid=iid)
+    if request.method == 'POST':
+        user = base64.b64decode(iid[9:len(iid)]).decode('utf-8')
+        utente = Utente.search_user(user)
+        code = request.form['code']
+        counter = int(time.time() // 30)  # Example counter based on time
+        expected_code = autorization.generate_hotp(utente["chiave segreta"], counter)
+        if expected_code == code:
+            return 'codice corretto', 200
         else:
-            return 'codice errato',400
+            return 'codice errato', 400
 
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
