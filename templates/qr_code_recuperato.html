@@ -3,36 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>QR Code</title>
-     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}">
- <style>
-        /* Stile di base per i temi */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* Pulsante tema */
-        .theme-toggle {
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/style.css') }}">
+    <style>
+        /* Stile per il toggle dello switch */
+        .theme-switch-wrapper {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: inherit;
+            display: flex;
+            align-items: center;
         }
 
-        .theme-toggle:focus {
-            outline: none;
+        .theme-switch {
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            position: relative;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: background-color 0.4s;
+            border-radius: 25px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "☀️";
+            font-size: 14px;
+            height: 19px;
+            width: 19px;
+            line-height: 19px;
+            text-align: center;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: transform 0.4s, content 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4caf50; /* Verde per il tema scuro */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(25px);
+            content: "🌙";
+        }
+
+        /* Stile aggiuntivo per l'immagine QR */
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 300px;
+            height: auto;
+        }
+
+        form {
+            text-align: center;
+            margin: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+            width: 300px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body class="light">
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
-        🌙
-    </button>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
     <script>
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
@@ -41,26 +115,26 @@
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme) {
             body.className = currentTheme;
-            themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            themeToggle.checked = currentTheme === 'dark';
         }
 
-        // Cambia tema al clic del pulsante
-        themeToggle.addEventListener('click', () => {
-            const isDarkMode = body.classList.toggle('dark');
-            body.classList.toggle('light', !isDarkMode);
-            themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+        // Cambia tema al clic dello switch
+        themeToggle.addEventListener('change', () => {
+            const isDarkMode = themeToggle.checked;
+            body.className = isDarkMode ? 'dark' : 'light';
 
             // Salva il tema attuale in localStorage
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         });
     </script>
-<h1>Scansiona il QR Code per configurare il TOTP</h1>
-<img src="data:image/png;base64,{{ qr_code_img }}" alt="QR Code">
-<form action="/verify_totp_recuperato" method="POST">
-    <input type="hidden" name="username" value="{{ username }}">
-    <h2>Inserisci il codice di verifica:</h2>
-    <input type="text" id="code" name="code" maxlength="6" required>
-    <input type="submit" value="Verifica">
-</form>
+
+    <h1>Scansiona il QR Code per configurare il TOTP</h1>
+    <img src="data:image/png;base64,{{ qr_code_img }}" alt="QR Code">
+    <form action="/verify_totp_recuperato" method="POST">
+        <input type="hidden" name="username" value="{{ username }}">
+        <h2>Inserisci il codice di verifica:</h2>
+        <input type="text" id="code" name="code" maxlength="6" required>
+        <input type="submit" value="Verifica">
+    </form>
 </body>
 </html>
