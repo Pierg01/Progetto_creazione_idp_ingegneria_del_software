@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}" type="text/css"/>
     <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
     <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='Scripts/switchroute.js') }}"></script>
 </head>
 <body class="light">
     <div class="theme-switch-wrapper">
@@ -27,25 +28,5 @@
         <input type="submit" name="change_route" id="change_route" placeholder="cambia metodo"/>
     </form>
 </div>
-<script>
-    let totp = "/otp_code/{{ iid }}"
-    let email= "/send_email/{{ iid }}"
-    let form= document.getElementById('form_2fa')
-    let button=document.getElementById('change_route')
-    button.addEventListener('click',()=>{
-        let select = document.getElementById('select_method')
-        if (select.value === 'TOTP'){
-            form.action=totp
-        }
-        else{
-            form.action=email
-            fetch(form.action,{
-                method: 'POST'
-            }).then((r) => {console.log(r)})
-
-        }
-        console.log(form.action)
-    })
-</script>
 </body>
 </html>
