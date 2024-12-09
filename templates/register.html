@@ -4,106 +4,9 @@
     <meta charset="UTF-8">
     <title>Registrazione</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}">
-    <style>
-        /* Stile per il toggle dello switch */
-        .theme-switch-wrapper {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-        }
 
-        .theme-switch {
-            display: inline-block;
-            width: 50px;
-            height: 25px;
-            position: relative;
-        }
-
-        .theme-switch input {
-            display: none;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: background-color 0.4s;
-            border-radius: 25px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "☀️";
-            font-size: 14px;
-            height: 19px;
-            width: 19px;
-            line-height: 19px;
-            text-align: center;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: transform 0.4s, content 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #4caf50; /* Verde per il tema scuro */
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(25px);
-            content: "🌙";
-        }
-
-        /* Stile per il form */
-        .form-section {
-            margin: 20px;
-        }
-
-        .form-section input[type="email"],
-        .form-section input[type="text"],
-        .form-section input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .form-section input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .form-section input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        /* Stile per i link */
-        p {
-            text-align: center;
-        }
-
-        p a {
-            color: #4caf50;
-            text-decoration: none;
-        }
-
-        p a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
+    <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
 </head>
 
 <body class="light">
@@ -113,27 +16,6 @@
             <span class="slider"></span>
         </label>
     </div>
-
-    <script>
-        const body = document.body;
-        const themeToggle = document.getElementById('theme-toggle');
-
-        // Salva il tema preferito in localStorage
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme) {
-            body.className = currentTheme;
-            themeToggle.checked = currentTheme === 'dark';
-        }
-
-        // Cambia tema al clic dello switch
-        themeToggle.addEventListener('change', () => {
-            const isDarkMode = themeToggle.checked;
-            body.className = isDarkMode ? 'dark' : 'light';
-
-            // Salva il tema attuale in localStorage
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-        });
-    </script>
 
     <h1>Registrati con noi</h1>
     <section class="form-section">
