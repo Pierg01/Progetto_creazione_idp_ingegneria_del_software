@@ -81,7 +81,6 @@ def send_email(iid):
         verifica_email.invia_mex(utente["Email"], cod_gen)
         return redirect(url_for('step_finale_email', iid=iid))
 
-
 @app.route('/step_finale_email/<iid>', methods=['GET', 'POST'])
 def step_finale_email(iid):
     if request.method == 'GET':
@@ -92,10 +91,12 @@ def step_finale_email(iid):
         code = request.form['code']
         counter = int(time.time() // 30)  # Example counter based on time
         expected_code = autorization.generate_hotp(utente["chiave segreta"], counter)
-        if expected_code == code:
-            return 'codice corretto', 200
+        if expected_code == code or autorization.generate_hotp(utente["chiave segreta"],
+                                                  counter - 1) == code or autorization.generate_hotp(
+                utente["chiave segreta"], counter + 1) == code:
+            return "Codice corretto",200  # Reindirizza a una pagina di successo
         else:
-            return render_template('Verifica_codice_email.html', iid=iid, error="Codice errato", cod_gen=expected_code)
+            return render_template('Verifica_codice_email.html', iid=iid, error="Codice non valido. Riprova.")
 
 
 # Route per la gestione della registrazione
