@@ -20,6 +20,9 @@
     <form action="{{ url_for('verifica_codice', iid=iid, cod_gen=cod_gen) }}" method="POST">
         <input type="hidden" name="iid" value="{{ iid }}">
         <input type="hidden" name="cod_gen" value="{{ cod_gen }}">
+        {% if error %}
+            <p style="color: red; text-align: center">{{ error }}</p>
+        {% endif %}
         <input type="text" name="codice" maxlength="6" required>
         <input type="submit" value="Verifica">
     </form>

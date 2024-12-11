@@ -18,6 +18,9 @@
     <h1>Scansiona il QR Code per configurare il TOTP</h1>
     <img src="data:image/png;base64,{{ qr_code_img }}" alt="QR Code">
     <form action="/verify_totp_recuperato" method="POST">
+        {% if error %}
+            <p style="color: red; text-align: center">{{ error }}</p>
+        {% endif %}
         <input type="hidden" name="username" value="{{ username }}">
         <h2>Inserisci il codice di verifica:</h2>
         <input type="text" id="code" name="code" maxlength="6" required>

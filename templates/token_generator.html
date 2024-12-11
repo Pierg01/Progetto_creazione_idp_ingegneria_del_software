@@ -4,9 +4,114 @@
     <meta charset="UTF-8">
     <title>Token</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}" type="text/css"/>
-    <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
-    <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
-    <script src="{{ url_for('static', filename='Scripts/switchroute.js') }}"></script>
+    <style>
+        /* Stile per il toggle del tema */
+        .theme-switch-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            position: relative;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: background-color 0.4s;
+            border-radius: 25px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "☀️";
+            font-size: 14px;
+            height: 19px;
+            width: 19px;
+            line-height: 19px;
+            text-align: center;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: transform 0.4s, content 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4caf50; /* Verde per il tema scuro */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(25px);
+            content: "🌙";
+        }
+
+        /* Stile per il corpo della pagina */
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 200px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        body.light {
+            background-color: #fff;
+            color: #000;
+        }
+
+        body.dark {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
 </head>
 <body class="light">
     <div class="theme-switch-wrapper">
@@ -16,7 +121,26 @@
         </label>
     </div>
 
+    <script>
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
 
+        // Salva il tema preferito in localStorage
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            body.className = currentTheme;
+            themeToggle.checked = currentTheme === 'dark';
+        }
+
+        // Cambia tema al clic dello switch
+        themeToggle.addEventListener('change', () => {
+            const isDarkMode = themeToggle.checked;
+            body.className = isDarkMode ? 'dark' : 'light';
+
+            // Salva il tema attuale in localStorage
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        });
+    </script>
 <h1> Seleziona il metodo di autenticazione</h1>
 <div>
     <form method="POST" action="/otp_code/{{ iid }}" id = "form_2fa">
@@ -28,5 +152,25 @@
         <input type="submit" name="change_route" id="change_route" placeholder="cambia metodo"/>
     </form>
 </div>
+<script>
+    let totp = "/otp_code/{{ iid }}"
+    let email= "/send_email/{{ iid }}"
+    let form= document.getElementById('form_2fa')
+    let button=document.getElementById('change_route')
+    button.addEventListener('click',()=>{
+        let select = document.getElementById('select_method')
+        if (select.value === 'TOTP'){
+            form.action=totp
+        }
+        else{
+            form.action=email
+            fetch(form.action,{
+                method: 'POST'
+            }).then((r) => {console.log(r)})
+
+        }
+        console.log(form.action)
+    })
+</script>
 </body>
 </html>

@@ -8,6 +8,9 @@
     <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
 </head>
 <body class="light">
+    {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
     <div class="theme-switch-wrapper">
         <label class="theme-switch">
             <input type="checkbox" id="theme-toggle">

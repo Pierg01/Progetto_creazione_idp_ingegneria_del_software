@@ -21,6 +21,9 @@
     <section class="form-section">
         {% block content %}
         <form action="/login" method="POST">
+            {% if error %}
+                <p style="color: red;">{{ error }}</p>
+            {% endif %}
             <label>Username:
                 <input type="text" name="username" required />
             </label>

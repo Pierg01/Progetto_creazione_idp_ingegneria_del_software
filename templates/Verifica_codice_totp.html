@@ -15,10 +15,10 @@
         </label>
     </div>
 
-
-<h2>
-</h2>
 <form action="{{ url_for('step_finale_totp', iid=iid) }}" method="POST">
+    {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
         Inserire il codice di verifica
         <input type="text" name="code" maxlength="6">
         <input type="submit" value="INVIA">
