@@ -1,9 +1,12 @@
 import base64
+import datetime
 import hashlib
 import random
 import string
 import time
 from flask import Flask, render_template, request, redirect, url_for
+from jwt import PyJWT
+
 import Utente
 import autorization
 import verifica_email
@@ -94,7 +97,10 @@ def step_finale_email(iid):
         if expected_code == code or autorization.generate_hotp(utente["chiave segreta"],
                                                   counter - 1) == code or autorization.generate_hotp(
                 utente["chiave segreta"], counter + 1) == code:
-            return "Codice corretto",200  # Reindirizza a una pagina di successo
+            chiave = utente["key token"]
+            jwtt = PyJWT()
+            token = jwtt.encode(payload={"Username":utente["Username"],"exp": (datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(minutes=1))},key=chiave,algorithm="HS256")
+            return redirect(f"http://localhost:2000/{token}")
         else:
             return render_template('Verifica_codice_email.html', iid=iid, error="Codice non valido. Riprova.")
 
