@@ -1,3 +1,5 @@
+import secrets
+
 import pymongo
 
 def search_user(utente: str) -> dict:
@@ -40,3 +42,22 @@ def insert_user(user):
 
 def compare_password(password1, password2) -> bool:
     return password1 == password2
+
+
+def get_key_token(user:dict):
+    dbs = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = dbs.get_database("Idp_User")
+    collection = db["Idp_User"]
+    utente=search_user(user)
+    if utente["key token"]=="":
+        key=secrets.token_hex(32)
+        utente["key token"]=key
+        collection.update_one(
+            {"Utenti": {"$exists": True}},
+            {"$push": {"key token": key}}
+        )
+        return key
+    else:
+        return utente["key token"]
+
+
