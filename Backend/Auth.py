@@ -6,7 +6,6 @@ import string
 import time
 from flask import Flask, render_template, request, redirect, url_for
 from jwt import PyJWT
-
 import Utente
 import autorization
 import verifica_email
@@ -18,6 +17,7 @@ app = Flask(__name__, template_folder='../templates', static_folder='../static')
 def mainpage():
     if request.method == "GET":
         return render_template('index.html')
+
 
 
 # Route di gestione del login
@@ -57,18 +57,20 @@ def otp_code(iid):
         return redirect(url_for('step_finale_totp', iid=iid))
 
 
-@app.route('/step_finale_totp/<iid>', methods=['GET', 'POST'])
+@app.route('/step_finale_totp/<iid>/', methods=['GET', 'POST'])
 def step_finale_totp(iid):
     if request.method == 'GET':
         return render_template("Verifica_codice_totp.html", iid=iid)
     elif request.method == 'POST':
-        print("Sono nella richiesta post")
         utente = Utente.search_user(base64.b64decode(iid[9:len(iid)]).decode('utf-8'))
         chiave = utente["chiave segreta"]
         code = request.form["code"]
-        print("Codice acquisito", code)
         if autorization.verify_totp(chiave, code):
-            return "Codice corretto", 200
+            key = Utente.get_key_token(utente)
+            jwtt = PyJWT()
+            token = jwtt.encode(payload={"Username":utente["Username"],"exp":datetime.datetime.now(tz=datetime.timezone.utc)+datetime.timedelta(minutes=1)},key=key,algorithm="HS256")
+            key = base64.b64encode(key.encode('utf-8')).decode('utf-8')
+            return redirect(f"http://localhost:2000/{ token }/{key}")
         else:
             return render_template("Verifica_codice_totp.html", iid=iid, error="Codice errato, riprova"
                                                                                " o recupera chiave TOTP dal link in basso")
@@ -91,16 +93,18 @@ def step_finale_email(iid):
     if request.method == 'POST':
         user = base64.b64decode(iid[9:len(iid)]).decode('utf-8')
         utente = Utente.search_user(user)
+        print(utente)
         code = request.form['code']
         counter = int(time.time() // 30)  # Example counter based on time
         expected_code = autorization.generate_hotp(utente["chiave segreta"], counter)
         if expected_code == code or autorization.generate_hotp(utente["chiave segreta"],
                                                   counter - 1) == code or autorization.generate_hotp(
                 utente["chiave segreta"], counter + 1) == code:
-            chiave = utente["key token"]
+            key = Utente.get_key_token(utente)
             jwtt = PyJWT()
-            token = jwtt.encode(payload={"Username":utente["Username"],"exp": (datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(minutes=1))},key=chiave,algorithm="HS256")
-            return redirect(f"http://localhost:2000/{token}")
+            token = jwtt.encode(payload={"Username":utente["Username"],"exp": (datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(minutes=1)).timestamp()},key=key,algorithm="HS256")
+            key = base64.b64encode(key.encode('utf-8')).decode('utf-8')
+            return redirect(f"http://localhost:2000/{token}/{key}")
         else:
             return render_template('Verifica_codice_email.html', iid=iid, error="Codice non valido. Riprova.")
 
@@ -133,12 +137,9 @@ def registrazione():
         return render_template('register.html', error="Password non deve contenere caratteri speciali o spazi")
 
     # Verifico se l'email è valida
-    print(f"Verifying email: {email}")
     is_email_valid, message = verifica_email.verify_email_smtp(email)
-    print(f"Email valid: {is_email_valid}, Message: {message}")
     if not is_email_valid:
         return render_template('register.html', error=f"Errore email: {message}")
-    print("Email verificata correttamente.")
     # Genero chiave segreta e URI per il TOTP
     chiave = autorization.generate_key()
     uri = autorization.generate_uri(chiave, user, email)
@@ -152,7 +153,8 @@ def registrazione():
             "Username": user,
             "Password": psw,
             "Email": email,
-            "chiave segreta": chiave
+            "chiave segreta": chiave,
+            "Key token": ""
         }
         # Inserisco l'utente nel database e genero il QR code per il TOTP
         Utente.insert_user(utente)
@@ -217,6 +219,21 @@ def verify_totp_recuperato():
         return render_template('recuperato_success.html')
     else:
         return render_template('qr_code_recuperato.html', error="Codice non valido", username=username, qr_code_img=img)
+
+
+@app.route('/refresh_token/{{ token }}/{{ key }}',methods=["POST"])
+def refresh_token(token,key):
+
+
+    jwtt = PyJWT()
+    utente =jwtt.decode(token,key=key,algorithms=["HS256"])
+
+    token = jwtt.encode(payload={"Username": utente["Username"],
+                                 "exp": (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)).timestamp()},
+                        key=key, algorithm="HS256")
+    key = base64.b64encode(key.encode('utf-8')).decode('utf-8')
+    return redirect(f"http://localhost:2000/{token}/{key}")
+
 
 
 if __name__ == '__main__':

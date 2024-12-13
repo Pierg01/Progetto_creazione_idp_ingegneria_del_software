@@ -44,11 +44,14 @@ def compare_password(password1, password2) -> bool:
     return password1 == password2
 
 
+
+
 def get_key_token(user:dict):
     dbs = pymongo.MongoClient("mongodb://localhost:27017/")
     db = dbs.get_database("Idp_User")
     collection = db["Idp_User"]
-    utente=search_user(user)
+    username = user["Username"]
+    utente=search_user(username)
     if utente["key token"]=="":
         key=secrets.token_hex(32)
         utente["key token"]=key
@@ -59,5 +62,7 @@ def get_key_token(user:dict):
         return key
     else:
         return utente["key token"]
+
+
 
 
