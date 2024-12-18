@@ -3,53 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina Iniziale</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/style.css') }}">
-    <!-- Aggiunta di AOS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-    <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
-    <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
+    <title>IDP con Oauth e 2FA</title>
+    <!-- Foglio di stile principale -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/index.css') }}">
+    <!-- AOS Library for animations -->
+    <!-- Icone (Font Awesome) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 </head>
-<body class="light">
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
+
+<body>
+<!-- Navbar -->
+
+<header>
+    <div class="logo">CALM-IDP</div>
+    <div class="home-text">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Chi Siamo</a></li>
+
+            <!-- Bottone cambio tema -->
+            <button id="theme-toggle" aria-label="Cambia tema">
+                <i class="fas fa-moon"></i>
+            </button>
+        </ul>
     </div>
-    <h1>IDP con Oauth e 2FA</h1>
-    <h2>Selezioni una delle seguenti opzioni:</h2>
-    <div class="button-container">
-        <a href="{{ url_for('registrazione') }}" class="button">Registrati</a>
-        <a href="{{ url_for('login') }}" class="button">Accedi</a>
+</header>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Usa CALM-IDP e dormirai tranquillo </h1>
+        <div class="button-container">
+            <a href="{{ url_for('registrazione') }}" class="button">Registrati</a>
+            <a href="{{ url_for('login') }}" class="button">Accedi</a>
+        </div>
     </div>
-    <br>
-    <div>
-        <h1>Chi siamo</h1>
-    </div>
+</section>
+
+<!-- Sezione Chi siamo -->
+<section id="about">
+    <h1>Best team forever</h1>
     <div class="photo-container">
-        <div data-aos="fade-up">
-            <img src="{{ url_for('static', filename='Images/') }}" alt="Foto 1">
+        <div data-aos="fade-up" data-aos-duration="1000">
+            <img src="{{ url_for('static', filename='Images/photo1.png') }}" alt="Rocco" loading="lazy">
             <p>Rocco</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
-        <div data-aos="fade-up" data-aos-delay="100">
-            <img src="{{ url_for('static', filename='Images/FotoPier.jpg') }}" alt="Foto 2">
+        <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+            <img src="{{ url_for('static', filename='Images/FotoPier.jpg') }}" alt="Pier" loading="lazy">
             <p>Pier</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
-        <div data-aos="fade-up" data-aos-delay="200">
-            <img src="{{ url_for('static', filename='Images/photo3.jpg') }}" alt="Foto 3">
+        <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <img src="{{ url_for('static', filename='Images/photo3.jpg') }}" alt="Alessandro" loading="lazy">
             <p>Alessandro</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
-        <div data-aos="fade-up" data-aos-delay="300">
-            <img src="{{ url_for('static', filename='Images/photo4.jpg') }}" alt="Foto 4">
+        <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+            <img src="{{ url_for('static', filename='Images/photo4.jpg') }}" alt="Nicholas" loading="lazy">
             <p>Nicholas</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
     </div>
 
-    <!-- Inizializza AOS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 CALM-IDP Platform. Tutti i diritti riservati.</p>
+</footer>
+
+<!-- Script AOS -->
+
+<script>
+    AOS.init({
+        duration: 800, // Durata animazione di default (ms)
+        once: true,    // L'animazione si esegue solo una volta quando l'elemento entra nella viewport
+        offset: 100,   // Distanza dal bordo inferiore della finestra prima che inizi l'animazione
+    });
+</script>
+
+<script>
+    // Riferimenti agli elementi
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i'); // L'icona nel pulsante
+
+    // Verifica se è presente un tema salvato
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        body.classList.add(currentTheme);
+        updateIcon(currentTheme);
+    }
+
+    // Gestisce il cambio di tema
+    themeToggleBtn.addEventListener('click', () => {
+        if (body.classList.contains('light')) {
+            body.classList.replace('light', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateIcon('dark');
+        } else {
+            body.classList.replace('dark', 'light');
+            localStorage.setItem('theme', 'light');
+            updateIcon('light');
+        }
+    });
+
+    // Funzione per aggiornare l'icona
+    function updateIcon(theme) {
+        if (theme === 'dark') {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
+
+    // Imposta il tema iniziale di default
+    if (!currentTheme) {
+        body.classList.add('light');
+        localStorage.setItem('theme', 'light');
+        updateIcon('light');
+    }
+
+</script>
 </body>
 </html>

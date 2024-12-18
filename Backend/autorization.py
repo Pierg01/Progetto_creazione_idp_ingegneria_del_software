@@ -1,11 +1,14 @@
 import base64
 import hashlib
 import hmac
+import string
 import struct
 from io import BytesIO
+from operator import truediv
 
 import pyotp
 import qrcode
+from flask import render_template
 
 
 def generate_key():

@@ -3,68 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrazione</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/style.css')}}">
-
-    <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
-    <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Styles/register.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='Scripts/mostrapsw.js') }}" defer></script>
 </head>
+<body>
+<!-- Header -->
+<header>
+    <div class="logo">CALM-IDP</div>
+    <button id="theme-toggle" aria-label="Cambia tema">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
 
-<body class="light">
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
+<!-- Sezioni principali -->
+<div class="main-container">
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <div class="form-container">
+            <h2>Registrati</h2>
+            <form action="/registrazione" method="POST" onsubmit="return validatePassword()">
+                <label>Email:
+                    <input type="email" name="email" required/>
+                </label>
+                <label>Username:
+                    <input type="text" name="username" required/>
+                </label>
+                <label>Password:
+                    <input type="password" id="password" name="password" required/>
+                    <span class="show-password" onclick="togglePasswordVisibility()">Mostra Password</span>
+                </label>
+                <p id="error-message" style="color: red;"></p>
+                <button type="submit">REGISTRATI</button>
+            </form>
+            <p>Hai già un account? <a href="{{ url_for('login') }}">Accedi</a></p>
+        </div>
     </div>
+</div>
 
-    <h1>Registrati con noi</h1>
-    <section class="form-section">
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-        <form action="/registrazione" method="POST" onsubmit="return validatePassword()">
-            <label>Email:
-                <input type="email" name="email" required/>
-            </label>
-            <label>Username:
-                <input type="text" name="username" required/>
-            </label>
-            <label>Password:
-                <input type="password" id="password" name="password" required/>
-                <input type="checkbox" id="togglePassword" onclick="togglePasswordVisibility()"> Mostra Password
-            </label>
-            <p id="error-message" style="color: red;"></p>
-            <input type="submit" value="Registrati"/>
-        </form>
-    </section>
-    <p>Hai già un account? <a href="{{ url_for('login') }}">Accedi</a></p>
+<!-- Script Tema -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i');
 
-    <script>
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            var toggleButton = document.getElementById("togglePassword");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                toggleButton.textContent = "Nascondi Password";
-            } else {
-                passwordField.type = "password";
-                toggleButton.textContent = "Mostra Password";
-            }
-        }
+    // Carica il tema salvato
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.classList.add(currentTheme);
+    updateIcon(currentTheme);
 
-        function validatePassword() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            var errorMessage = document.getElementById("error-message");
-            var regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // Cambia tema
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+        body.classList.replace(body.classList[0], newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+    });
 
-            if (!regex.test(password)) {
-                errorMessage.textContent = "La password deve contenere almeno una lettera maiuscola, un numero e 8 caratteri minimo.";
-                return false;
-            }
-            errorMessage.textContent = "";
-            return true;
-        }
-    </script>
+    // Aggiorna icona
+    function updateIcon(theme) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+</script>
 </body>
 </html>

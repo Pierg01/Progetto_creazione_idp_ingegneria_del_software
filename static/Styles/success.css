@@ -1,0 +1,216 @@
+/* Reset e base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body.light {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+body.dark {
+    background-color: #121212;
+    color: #f4f4f4;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+body.dark header {
+    background-color: #121212;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+header nav {
+    display: flex;
+    gap: 1.5rem; /* Spaziatura tra i link */
+}
+
+header nav a {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease; /* Aggiungi una transizione per l'animazione */
+}
+
+header nav a:hover {
+    color: #ff9900; /* Colore al passaggio del mouse */
+    transform: scale(1.05); /* Leggera animazione di ingrandimento */
+}
+
+body.dark header nav a {
+    color: #f4b400; /* Colore dei link (tema scuro) */
+}
+
+body.dark header nav a:hover {
+    color: #d99400; /* Colore al passaggio del mouse (tema scuro) */
+}
+
+/* Bottone */
+header button {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+header button:hover {
+    background-color: #ff9900;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+body.dark header button:hover {
+    background-color: #d99400;
+}
+
+header button:focus {
+    outline: 2px solid #3f51b5; /* Aggiungi un bordo visibile per il focus */
+    outline-offset: 2px;
+}
+
+/* Form */
+form {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+body.dark form {
+    background-color: #222;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+body.dark form input[type="text"] {
+    background-color: #333;
+    color: #fff;
+    border-color: #444;
+}
+
+form input[type="text"]:focus {
+    border-color: #3f51b5;
+    outline: none;
+}
+
+form input[type="submit"] {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #3f51b5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background-color: #2c387e;
+}
+
+body.dark form input[type="submit"] {
+    background-color: #f4b400;
+}
+
+body.dark form input[type="submit"]:hover {
+    background-color: #d99400;
+}
+
+/* Error Message */
+form p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: red;
+}
+
+/* Paragrafi generali */
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 1rem 0;
+    color: inherit; /* Adatta il colore al tema */
+    text-align: center; /* Per allinearlo al centro come il resto */
+}
+
+/* Intestazioni centrali */
+h1, h2 {
+    text-align: center;
+    font-size: 2rem; /* Regola la dimensione se necessario */
+    margin: 2rem 0; /* Spaziatura sopra e sotto */
+    color: inherit; /* Adatta il colore al tema */
+}
+
+/* Link generali */
+a {
+    color: #3f51b5; /* Colore del link (tema chiaro) */
+    text-decoration: none; /* Rimuove la sottolineatura */
+    font-weight: bold;
+    display: inline-block; /* Permette la gestione del margine */
+    text-align: center; /* Allinea il testo nel link */
+    transition: color 0.3s ease, text-decoration 0.3s ease, transform 0.3s ease;
+    margin: 0 auto; /* Centro del link all'interno del contenitore */
+}
+
+body.dark a {
+    color: #f4b400; /* Colore del link (tema scuro) */
+}
+
+a:hover {
+    text-decoration: underline; /* Sottolinea il link al passaggio del mouse */
+    color: #2c387e; /* Colore al passaggio del mouse (tema chiaro) */
+    transform: scale(1.05); /* Aggiungi effetto di animazione */
+}
+
+body.dark a:hover {
+    color: #d99400; /* Colore al passaggio del mouse (tema scuro) */
+}
+
+a:focus {
+    outline: 2px solid #3f51b5; /* Evidenziazione al focus (tema chiaro) */
+    outline-offset: 2px; /* Spazio tra il link e il bordo */
+}
+
+body.dark a:focus {
+    outline: 2px solid #f4b400; /* Evidenziazione al focus (tema scuro) */
+}
+
+/* Centrare i link all'interno di paragrafi o contenitori */
+p, div {
+    text-align: center; /* Centra il contenuto all'interno di <p> o <div> */
+}
+

@@ -52,16 +52,16 @@ def get_key_token(user:dict):
     collection = db["Idp_User"]
     username = user["Username"]
     utente=search_user(username)
-    if utente["key token"]=="":
+    if utente["Key token"]=="":
         key=secrets.token_hex(32)
-        utente["key token"]=key
+        #utente["Key token"]=key
         collection.update_one(
-            {"Utenti": {"$exists": True}},
-            {"$push": {"key token": key}}
+            {"Utenti.Username": username},
+            {"$set": {"Utenti.$.Key token": key}}
         )
         return key
     else:
-        return utente["key token"]
+        return utente["Key token"]
 
 
 

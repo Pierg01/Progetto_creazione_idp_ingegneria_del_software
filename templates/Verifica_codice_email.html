@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Codice verifica email</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Styles/style.css') }}">
-    <link rel = "stylesheet" href="{{ url_for('static', filename='Styles/toggle.css') }}">
-    <script src="{{ url_for('static', filename='Scripts/toggle.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/inserimento_codice.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+            rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body class="light">
-    {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
-    </div>
+<!-- Header -->
+<header>
+    <div class="logo">CALM-IDP</div>
+    <button id="theme-toggle" aria-label="Cambia tema">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
 
 <h2>
     Controlla la tua mail
 </h2>
+    {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
 <form action="{{ url_for('step_finale_email', iid=iid) }}" method="POST">
     <label for="code_totp/email">
         Inserire il codice di verifica
@@ -29,5 +32,29 @@
     </label>
         <input type="submit" value="INVIA">
 </form>
+<!-- Script Tema -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i');
+
+    // Carica il tema salvato
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.classList.add(currentTheme);
+    updateIcon(currentTheme);
+
+    // Cambia tema
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+        body.classList.replace(body.classList[0], newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+    });
+
+    // Aggiorna icona
+    function updateIcon(theme) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+</script>
 </body>
 </html>
