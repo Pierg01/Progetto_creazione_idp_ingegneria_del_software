@@ -111,6 +111,10 @@ body.light .hero {
 }
 
 body.light .hero-content h1 {
+    font-family: 'Georgia', serif;
+    //font-family: 'Arial', sans-serif;
+    text-align: center;
+    font-size: 3rem;
     color: #333; /* Colore del titolo più scuro per risaltare */
 }
 
@@ -147,7 +151,10 @@ body.dark .hero {
 }
 
 body.dark .hero-content h1 {
-    color: #f4f4f4; /* Titolo chiaro per il tema scuro */
+    font-family: 'Georgia', serif;
+    text-align: center;
+    color: #f4f4f4;/* Titolo chiaro per il tema scuro */
+    font-size: 3rem;
 }
 
 body.dark .hero-content p {
