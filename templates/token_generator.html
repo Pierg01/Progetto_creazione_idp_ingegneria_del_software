@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Token</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/token_generator.css') }}">
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</head>
+<body class="light">
+<header>
+    <div class="logo">CALM-IDP</div>
+    <button id="theme-toggle" aria-label="Cambia tema">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+
+
+<h1> Seleziona il metodo di autenticazione</h1>
+<div>
+    <form method="POST" action="/otp_code/{{ iid }}" id="form_2fa">
+        <input type="hidden" name="iid" value="{{ iid }}">
+        <select name="2FA_chose" id="select_method">
+            <option value="TOTP">TOTP</option>
+            <option value="EMAIL">EMAIL</option>
+        </select>
+        <input type="submit" name="change_route" id="change_route" placeholder="cambia metodo"/>
+    </form>
+</div>
+<script>
+    let totp = "/otp_code/{{ iid }}"
+    let email = "/send_email/{{ iid }}"
+    let form = document.getElementById('form_2fa')
+    let button = document.getElementById('change_route')
+    button.addEventListener('click', () => {
+        let select = document.getElementById('select_method')
+        if (select.value === 'TOTP') {
+            form.action = totp
+        } else {
+            form.action = email
+            fetch(form.action, {
+                method: 'POST'
+            }).then((r) => {
+                console.log(r)
+            })
+
+        }
+        console.log(form.action)
+    })
+</script>
+<!-- Script Tema -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i');
+
+    // Carica il tema salvato
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.classList.add(currentTheme);
+    updateIcon(currentTheme);
+
+    // Cambia tema
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+        body.classList.replace(body.classList[0], newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+    });
+
+    // Aggiorna icona
+    function updateIcon(theme) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+</script>
+</body>
+</html>

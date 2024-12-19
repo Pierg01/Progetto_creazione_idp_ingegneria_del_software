@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrazione avvenuta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/success.css') }}">
+    <!-- AOS Library for animations -->
+    <!-- Icone (Font Awesome) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="light">
+<header>
+    <div class="logo">CALM-IDP</div>
+    <button id="theme-toggle" aria-label="Cambia tema">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+
+
+<h1>Registrazione avvenuta con successo!</h1>
+<p>La tua registrazione è stata completata con successo.</p>
+
+<div class="button-container">
+    <a href="{{ url_for('mainpage') }}" class="button">Vai alla Home</a>
+    <a href="{{ url_for('login') }}" class="button">Accedi</a>
+</div>
+<script>
+    AOS.init({
+        duration: 800, // Durata animazione di default (ms)
+        once: true,    // L'animazione si esegue solo una volta quando l'elemento entra nella viewport
+        offset: 100,   // Distanza dal bordo inferiore della finestra prima che inizi l'animazione
+    });
+</script>
+
+<script>
+    // Riferimenti agli elementi
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i'); // L'icona nel pulsante
+
+    // Verifica se è presente un tema salvato
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        body.classList.add(currentTheme);
+        updateIcon(currentTheme);
+    }
+
+    // Gestisce il cambio di tema
+    themeToggleBtn.addEventListener('click', () => {
+        if (body.classList.contains('light')) {
+            body.classList.replace('light', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateIcon('dark');
+        } else {
+            body.classList.replace('dark', 'light');
+            localStorage.setItem('theme', 'light');
+            updateIcon('light');
+        }
+    });
+
+    // Funzione per aggiornare l'icona
+    function updateIcon(theme) {
+        if (theme === 'dark') {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
+
+    // Imposta il tema iniziale di default
+    if (!currentTheme) {
+        body.classList.add('light');
+        localStorage.setItem('theme', 'light');
+        updateIcon('light');
+    }
+
+</script>
+</body>
+</html>

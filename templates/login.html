@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Styles/register.css') }}">
+    <script src="{{ url_for('static', filename='Scripts/mostrapsw.js') }}" defer></script>
+</head>
+<body class="light">
+    <!-- Header -->
+    <header>
+        <div class="logo">CALM-IDP</div>
+        <button id="theme-toggle" aria-label="Cambia tema">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <!-- Contenitore principale -->
+    <div class="main-container">
+        <div class="right-section">
+            <div class="form-container">
+                <h2>Login</h2>
+                <form action="/login" method="POST">
+                    {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                    <label for="username">Username:
+                        <input type="text" id="username" name="username" required>
+                    </label>
+                    <label for="password">Password:
+                        <input type="password" id="password" name="password" required>
+                        <span class="show-password" onclick="togglePasswordVisibility()">Mostra Password</span>
+                    </label>
+                    <button type="submit">ACCEDI</button>
+                </form>
+                <p>Non hai un account? <a href="{{ url_for('registrazione') }}">Registrati</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Script Tema -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+const body = document.body;
+const icon = themeToggleBtn.querySelector('i');
+
+// Carica il tema salvato
+const currentTheme = localStorage.getItem('theme') || 'light';
+body.classList.add(currentTheme);
+updateIcon(currentTheme);
+
+// Cambia tema
+themeToggleBtn.addEventListener('click', () => {
+    const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+    body.classList.replace(body.classList[0], newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcon(newTheme);
+});
+
+// Aggiorna icona
+function updateIcon(theme) {
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+    </script>
+</body>
+</html>

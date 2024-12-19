@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recupero avvenuto con successo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Styles/success.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="light">
+    <header>
+    <div class="logo">CALM-IDP</div>
+    <button id="theme-toggle" aria-label="Cambia tema">
+        <i class="fas fa-moon"></i>
+    </button>
+</header>
+
+    <h1>Puoi eseguire di nuovo il login</h1>
+    <div class="button-container">
+        <a href="{{ url_for('mainpage') }}" class="button">Vai alla Home</a>
+        <a href="{{ url_for('login') }}" class="button">Accedi</a>
+    </div>
+
+<!-- Script Tema -->
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    const icon = themeToggleBtn.querySelector('i');
+
+    // Carica il tema salvato
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.classList.add(currentTheme);
+    updateIcon(currentTheme);
+
+    // Cambia tema
+    themeToggleBtn.addEventListener('click', () => {
+        const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+        body.classList.replace(body.classList[0], newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+    });
+
+    // Aggiorna icona
+    function updateIcon(theme) {
+        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+</script>
+</body>
+</html>
