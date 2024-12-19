@@ -100,7 +100,7 @@ header .home-text ul li a:hover {
     align-items: center;
     text-align: center;
     padding: 4rem 2rem;
-    height: 80vh;
+    height: 100vh;
     transition: background 0.3s ease, color 0.3s ease;
 }
 
