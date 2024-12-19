@@ -26,6 +26,9 @@
         <div class="form-container">
             <h2>Registrati</h2>
             <form action="/registrazione" method="POST" onsubmit="return validatePassword()">
+                {% if error %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endif %}
                 <label>Email:
                     <input type="email" name="email" required/>
                 </label>
@@ -36,7 +39,6 @@
                     <input type="password" id="password" name="password" required/>
                     <span class="show-password" onclick="togglePasswordVisibility()">Mostra Password</span>
                 </label>
-                <p id="error-message" style="color: red;"></p>
                 <button type="submit">REGISTRATI</button>
             </form>
             <p>Hai già un account? <a href="{{ url_for('login') }}">Accedi</a></p>
