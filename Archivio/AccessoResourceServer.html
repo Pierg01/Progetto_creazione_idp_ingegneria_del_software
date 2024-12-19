@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="idp-layout2" data-page="login" ml-update="aware"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Accesso eseguito</title>
+
+<!-- Bootstrap CSS -->
+<link href=bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link href="bootstrap-icons.css" rel="stylesheet" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+
+<link rel="stylesheet" media="all" href="AccessoResourceServer_files/css.css">
+
+<link href="default.css" rel="stylesheet" type="text/css">
+<link href="custom.css" rel="stylesheet" type="text/css">
+
+<!-- SPID, CIE, eIDAS -->
+<link rel="stylesheet" type="text/css" href="spid-sp-access-button.min.css">
+<link rel="stylesheet" type="text/css" href="eidas-sp-access-button.min.css">
+
+<!-- IDP SETTINGS -->
+<script type="text/javascript">
+  const IdpTriggerExternal = '';
+  const IdpTabsRemember = 'true' === '';
+  const IdpTabsDefault = '';
+  const _triggerButtonGeneric = (inputId, buttonId, id) => {
+      document.getElementById(inputId).value = id;
+      document.getElementById(buttonId).click();
+  }
+  const triggerButton = (id) => _triggerButtonGeneric('spid_idp', 'bt_spid', id);
+  const triggerButtonExternal = (id) => _triggerButtonGeneric('external_idp', 'bt_external', id);
+  const triggerButtonEdugain = (id) => _triggerButtonGeneric('edugain_idp', 'bt_edugain', id);
+
+  // Funzione di utilità per eseguire codice al caricamento della pagina
+  const ready = (fn) => void (ready.promise = ready.promise.then(fn));
+  ready.promise = new Promise((resolve) => void (ready.resolve = resolve));
+  document.readyState !== 'loading' ? ready.resolve() : document.addEventListener('DOMContentLoaded', ready.resolve);
+
+  // Aggiunge un listener al resize della viewport per impostare il layout a 1 o 2 colonne
+  // [SDPRAU-10555] (Teams/Edge18) Si usa l'evento resize perché ResizeObserver non è supportato
+  function checkViewportSize() {
+    const isSmall = window.innerWidth < 992 || document.documentElement.classList.contains('legacy');
+    document.documentElement.classList.toggle('idp-layout1', isSmall);
+    document.documentElement.classList.toggle('idp-layout2', !isSmall);
+  }
+  window.addEventListener('resize', checkViewportSize);
+  checkViewportSize();
+</script>
+<script type="text/javascript" src="init.js"></script>
+    
+    
+  </head>
+  <body>
+    
+    
+    <div class="idp-main-container">
+      
+      <div class="idp-leftside">
+    
+    <a href="">  
+</a>
+      </div><div class="idp-rightside">
+        <div class="idp-topside">
+    
+    
+        </div>
+        <div class="idp-authside">
+          <!-- pages/page-login.vm -->
+
+
+
+<div class="idp-authside-header" style="display:block; margin: 0 auto;position: relative;top: 25%;">
+
+
+
+<h1 class="idp-authside-title">Accesso eseguito!</h1>
+  <p> Grazie per aver scelto CALM-IdP</p>
+  
+  
+  
+
+</div>
+
+
+
+
+        </div>
+        
+      </div>
+    </div>
+
+
+
+
+    
+    
+<style>
+    #content {
+        position: relative;
+    }
+    #content img {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+</style>
+
+<div id="content">
+    <img class="ribbon" alt="" src="chillguy.webp" width="40" height="30">
+    <div></div>
+</div>  
+
+
+</body></html>

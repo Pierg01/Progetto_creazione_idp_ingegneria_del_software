@@ -1,0 +1,23 @@
+{
+  "name": "progetto_login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pierg01/Progetto_creazione_idp_ingegneria_del_software.git"
+  },
+  "author": "Pier Ale Rocco Nic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pierg01/Progetto_creazione_idp_ingegneria_del_software/issues"
+  },
+  "homepage": "https://github.com/Pierg01/Progetto_creazione_idp_ingegneria_del_software#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

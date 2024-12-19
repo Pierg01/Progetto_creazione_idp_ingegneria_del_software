@@ -1,0 +1,27 @@
+:root {
+  --primary: #371863;
+  --rightside-padding-onecol: 0px;
+}
+
+.idp-topside {
+  border-top: 44px solid var(--primary);
+  background-color: transparent;
+  justify-content: left;
+  padding: 20px 90px;
+}
+
+.idp-leftside .idp-logo {
+  filter: brightness(0) invert(1);
+}
+
+.idp-footer {
+  margin-top: 3rem;
+  border-top: 4px solid var(--primary);
+  display: flex;
+  justify-content: center;
+  column-gap: 40px;
+  text-align: left;
+}
+.idp-footer img {
+  height: 90px;
+}

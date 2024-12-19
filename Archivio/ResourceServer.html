@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="idp-layout2" data-page="login" ml-update="aware"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Accedi</title>
+
+<!-- Bootstrap CSS -->
+<link href="bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" type="text/css">
+<link href="bootstrap-icons.css" rel="stylesheet" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous" type="text/css">
+
+<link rel="stylesheet" media="all" href="css.css" type="text/css">
+
+<link href="default.css" rel="stylesheet" type="text/css">
+<link href="custom.css" rel="stylesheet" type="text/css">
+
+<!-- SPID, CIE, eIDAS -->
+<link rel="stylesheet" type="text/css" href="spid-sp-access-button.min.css">
+<link rel="stylesheet" type="text/css" href="eidas-sp-access-button.min.css">
+
+<!-- IDP SETTINGS -->
+<script type="text/javascript">
+  const IdpTriggerExternal = '';
+  const IdpTabsRemember = 'true' === '';
+  const IdpTabsDefault = '';
+  const _triggerButtonGeneric = (inputId, buttonId, id) => {
+      document.getElementById(inputId).value = id;
+      document.getElementById(buttonId).click();
+  }
+  const triggerButton = (id) => _triggerButtonGeneric('spid_idp', 'bt_spid', id);
+  const triggerButtonExternal = (id) => _triggerButtonGeneric('external_idp', 'bt_external', id);
+  const triggerButtonEdugain = (id) => _triggerButtonGeneric('edugain_idp', 'bt_edugain', id);
+
+  // Funzione di utilità per eseguire codice al caricamento della pagina
+  const ready = (fn) => void (ready.promise = ready.promise.then(fn));
+  ready.promise = new Promise((resolve) => void (ready.resolve = resolve));
+  document.readyState !== 'loading' ? ready.resolve() : document.addEventListener('DOMContentLoaded', ready.resolve);
+
+  // Aggiunge un listener al resize della viewport per impostare il layout a 1 o 2 colonne
+  // [SDPRAU-10555] (Teams/Edge18) Si usa l'evento resize perché ResizeObserver non è supportato
+  function checkViewportSize() {
+    const isSmall = window.innerWidth < 992 || document.documentElement.classList.contains('legacy');
+    document.documentElement.classList.toggle('idp-layout1', isSmall);
+    document.documentElement.classList.toggle('idp-layout2', !isSmall);
+  }
+  window.addEventListener('resize', checkViewportSize);
+  checkViewportSize();
+</script>
+<script type="text/javascript" src="init.js"></script>
+    
+    
+  </head>
+  <body>
+    
+    
+    <div class="idp-main-container">
+      
+      <div class="idp-leftside">
+    
+    
+      </div><div class="idp-rightside">
+        <div class="idp-topside">
+    
+    
+        </div>
+        <div class="idp-authside">
+          
+
+
+
+<div class="idp-authside-header">
+
+
+
+<h1 class="idp-authside-title">Area Riservata</h1>
+  <p class="idp-login-txt">Per accedere usa l'identity provider</p>
+  
+
+</div>
+
+
+
+<div class="tab-content" id="idp-auths-content">
+    
+    <div class="tab-pane fade active show" id="auth-spid" role="tabpanel" aria-labelledby="auth-spid-tab">
+      <!-- auths/auth-spid.vm -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 idp-auths-btn">
+<form action="/idp/profile/SAML2/Redirect/SSO?execution=e1s2" class="idp-auth-spid-form" method="post" style="display:block; margin: 0 auto;">
+  <a href = "http://localhost:3000" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-small-get" aria-haspopup="true" aria-expanded="false">
+    <span class="italia-it-button-icon"><img src="spid-ico-circle-bb.svg" onerror="this.src='spid-ico-circle-bb.png'; this.onerror=null;" alt=""></span>
+    <span class="italia-it-button-text">Entra con CALM</span>
+  </a>
+  <button type="submit" id="bt_spid" name="_eventId_authn/CookieAuth" style="display:none;">SPID</button>
+  <input type="hidden" value="3" id="spid_idp" name="spid_idp">
+  
+</form>
+<div class="col-lg-6 idp-auths-info" >
+    <p>CALM-IdP è un sistema di identità digitale certificata.</p>
+<p>Se sei già in possesso di un'identità digitale, accedi con le credenziali. </p> <p> Se non hai ancora un'identità digitale, registrati.</p></div>
+    
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+</div>
+        </div>
+        
+      </div>
+    </div>
+
+
+
+
+    
+    
+  
+
+
+</body></html>
