@@ -96,7 +96,6 @@ def step_finale_email(iid):
     if request.method == 'POST':
         user = base64.b64decode(iid[9:len(iid)]).decode('utf-8')
         utente = Utente.search_user(user)
-        print(utente)
         code = request.form['code']
         counter = int(time.time() // 30)  # Example counter based on time
         expected_code = autorization.generate_hotp(utente["chiave segreta"], counter)
@@ -106,7 +105,7 @@ def step_finale_email(iid):
             key = Utente.get_key_token(utente)
             jwtt = PyJWT()
             token = jwtt.encode(payload={"Username": utente["Username"], "exp": (
-                        datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)).timestamp()},
+                    datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=1)).timestamp()},
                                 key=key, algorithm="HS256")
             key = base64.b64encode(key.encode('utf-8')).decode('utf-8')
             return redirect(f"http://localhost:2000/{token}/{key}")
