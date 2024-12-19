@@ -28,6 +28,7 @@
             <form action="/registrazione" method="POST" onsubmit="return validatePassword()">
                 {% if error %}
                     <p style="color: red;">{{ error }}</p>
+                    <p></p>
                 {% endif %}
                 <label>Email:
                     <input type="email" name="email" required/>
