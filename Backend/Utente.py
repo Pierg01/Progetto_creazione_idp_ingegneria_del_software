@@ -64,3 +64,14 @@ def get_key_token(user: dict):
         return key
     else:
         return utente["Key token"]
+
+def cambio_psw(user: dict, new_psw: str):
+    dbs = pymongo.MongoClient("mongodb://localhost:27017/")
+    db = dbs.get_database("Idp_User")
+    collection = db["Idp_User"]
+    username = user["Username"]
+    collection.update_one(
+        {"Utenti.Username": username},
+        {"$set": {"Utenti.$.Password": new_psw}}
+    )
+

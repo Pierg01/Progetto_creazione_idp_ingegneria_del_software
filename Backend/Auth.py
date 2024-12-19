@@ -238,6 +238,43 @@ def refresh_token(token, key):
     return redirect(f"http://localhost:2000/{token}/{key}")
 
 
+@app.route('/richiesta_cambio_password', methods=['GET','POST'])
+def richiesta_cambio_password():
+    if request.method == 'GET':
+        return render_template('richiesta_cambio_password.html')
+    username = request.form['username']
+    utente = Utente.search_user(username)
+    if not utente:
+        return render_template('richiesta_cambio_password.html', error="Utente non trovato.")
+
+    cod_gen = autorization.generate_hotp(utente["chiave segreta"], int(time.time() // 30))
+    verifica_email.invia_mex(utente["Email"], cod_gen)
+    return render_template('verifica_codice_cambio_password.html', username=username)
+
+@app.route('/verifica_cambio_password', methods=['POST'])
+def verifica_cambio_password():
+    username = request.form['username']
+    code = request.form['code']
+    new_password = request.form['new_password']
+    confirm_password = request.form['confirm_password']
+
+    if new_password != confirm_password:
+        return render_template('verifica_codice_cambio_password.html', username=username, error="Le nuove password non coincidono.")
+
+    utente = Utente.search_user(username)
+    if not utente:
+        return render_template('verifica_codice_cambio_password.html', username=username, error="Utente non trovato.")
+
+    counter = int(time.time() // 30)
+    expected_code = autorization.generate_hotp(utente["chiave segreta"], counter)
+    if expected_code != code and autorization.generate_hotp(utente["chiave segreta"], counter - 1) != code and autorization.generate_hotp(utente["chiave segreta"], counter + 1) != code:
+        return render_template('verifica_codice_cambio_password.html', username=username, error="Codice non valido.")
+
+    predefined_salt = '10'
+    new_password_hashed = hashlib.sha256((predefined_salt + new_password).encode('utf-8')).hexdigest()
+    Utente.cambio_psw(utente, new_password_hashed)
+    return render_template('cambio_psw_success.html')
+
 if __name__ == '__main__':
     FLASK_APP = "./Backend/Auth.py"
     app.run(port=3000, debug=True)

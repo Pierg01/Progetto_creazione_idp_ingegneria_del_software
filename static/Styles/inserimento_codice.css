@@ -102,13 +102,33 @@ form input[type="text"] {
     transition: border-color 0.3s;
 }
 
-body.dark form input[type="text"] {
+body.dark form input[type="text"]{
     background-color: #333;
     color: #fff;
     border-color: #444;
 }
 
-form input[type="text"]:focus {
+form input[type="text"] :focus {
+    border-color: #3f51b5;
+    outline: none;
+}
+form input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+body.dark form input[type="password"]{
+    background-color: #333;
+    color: #fff;
+    border-color: #444;
+}
+
+form input[type="password"] :focus {
     border-color: #3f51b5;
     outline: none;
 }

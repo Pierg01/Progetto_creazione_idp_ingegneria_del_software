@@ -33,6 +33,7 @@
                     <label for="password">Password:
                         <input type="password" id="password" name="password" required>
                         <span class="show-password" onclick="togglePasswordVisibility()">Mostra Password</span>
+                        <a href="{{ url_for('richiesta_cambio_password') }}" style="margin-left: 6.3rem">Password dimenticata?</a>
                     </label>
                     <button type="submit">ACCEDI</button>
                 </form>

@@ -2,36 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Verifica mail</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/inserimento_codice.css') }}">
+    <title>Recupero avvenuto con successo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Styles/success.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link
-            rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="light">
-<!-- Header -->
-<header>
+    <header>
     <div class="logo">CALM-IDP</div>
     <button id="theme-toggle" aria-label="Cambia tema">
         <i class="fas fa-moon"></i>
     </button>
 </header>
-<div class="form-container">
-    <h1>Verifica la tua mail</h1>
-    <p>Abbiamo inviato un codice di verifica alla tua mail. Inseriscilo qui sotto:</p>
-    <form action="{{ url_for('verifica_codice', iid=iid, cod_gen=cod_gen) }}" method="POST">
-        <input type="hidden" name="iid" value="{{ iid }}">
-        <input type="hidden" name="cod_gen" value="{{ cod_gen }}">
 
-        {% if error %}
-        <p>{{ error }}</p>
-        {% endif %}
+    <h1>Password cambiata con successo</h1>
+    <div class="button-container">
+        <a href="{{ url_for('mainpage') }}" class="button">Vai alla Home</a>
+        <a href="{{ url_for('login') }}" class="button">Accedi</a>
+    </div>
 
-        <input type="text" name="codice" maxlength="6" required placeholder="Inserisci il codice">
-        <input type="submit" value="Verifica">
-    </form>
-</div>
 <!-- Script Tema -->
 <script>
     const themeToggleBtn = document.getElementById('theme-toggle');
