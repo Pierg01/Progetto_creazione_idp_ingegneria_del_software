@@ -32,6 +32,12 @@
     </label>
         <input type="submit" value="INVIA">
 </form>
+<form action = "{{ url_for('send_email', iid=iid) }}" method="POST">
+    <label for="code_totp/email">
+    <p style="text-align: center; color: black">In caso di problemi clicca qui per ricevere un altro codice</p>
+    <input type="submit" value="Reinvia il codice">
+    </label>
+</form>
 <!-- Script Tema -->
 <script>
     const themeToggleBtn = document.getElementById('theme-toggle');
