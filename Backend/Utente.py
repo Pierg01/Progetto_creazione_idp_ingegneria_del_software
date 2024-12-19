@@ -52,7 +52,7 @@ def get_key_token(user:dict):
     collection = db["Idp_User"]
     username = user["Username"]
     utente=search_user(username)
-    if utente["Key token"]=="":
+    if utente["key token"]=="":
         key=secrets.token_hex(32)
         #utente["Key token"]=key
         collection.update_one(
