@@ -30,7 +30,7 @@ In pratica, il  sistema  permette all'utente di controllare a quali informazioni
    - Autenticare l'utente.
    - Emettere i token: L'Authorization Server deve generare token di accesso. Questi token permettono al client di accedere alle risorse protette senza richiedere nuovamente le credenziali dell'utente.
    - Gestire le autorizzazioni: L'utente dovrà essere in grado di approvare o negare l'accesso ai suoi dati da parte del client.
-
+   - gestisce i dati essenziali tramite un database Mongodb  
 
 
 ### Resource Server
