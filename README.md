@@ -32,8 +32,9 @@ In pratica, il  sistema  permette all'utente di controllare a quali informazioni
    - Gestire le autorizzazioni: L'utente dovrà essere in grado di approvare o negare l'accesso ai suoi dati da parte del client.
 
 
+
 ### Resource Server
 Il server delle risorse implementato in Node, contiene le risorse a cui si tenta di accedere una volta autenticati. Si affiderà al Server di Autorizzazione.
-   
+Il codice del Resource Server si trova nel branch Main.
 
 
